@@ -1,0 +1,84 @@
+diff --git a/shm_manager/csrc/model_manager.cpp b/shm_manager/csrc/model_manager.cpp
+index 65d3c62c8..c948e501d 100644
+--- a/shm_manager/csrc/model_manager.cpp
++++ b/shm_manager/csrc/model_manager.cpp
+@@ -57,6 +57,8 @@ ModelManager::ModelManager(
+     cudaDeviceGetStreamPriorityRange(&least_priority, &greatest_priority);
+ 
+     CUDA_CHECK(cudaStreamCreateWithPriority(&copy_stream_, cudaStreamNonBlocking, least_priority));
++    CUDA_CHECK(cudaEventCreateWithFlags(&copy_throttle_event_,
++        cudaEventBlockingSync | cudaEventDisableTiming));
+     
+     //---------------------------------------------
+     CUDA_CHECK(cudaStreamCreateWithPriority(&unpack_stream_, cudaStreamNonBlocking, least_priority));
+@@ -82,6 +84,7 @@ ModelManager::~ModelManager() {
+     cudaStreamSynchronize(copy_stream_);
+     cudaStreamSynchronize(unpack_stream_);
+     cudaStreamDestroy(copy_stream_);
++    cudaEventDestroy(copy_throttle_event_);
+     for (auto e : copy_layer_events_) cudaEventDestroy(e);
+     copy_layer_events_.clear();
+     for (auto e : layer_start_events_) if (e) cudaEventDestroy(e);
+@@ -568,7 +571,10 @@ void ModelManager::load_layers(const std::vector<int>& layer_idxes) {
+                 // weight values. Keep transfers concurrent in that phase;
+                 // protect KV initialization and CUDA-module warmup below.
+                 if (is_kv_cache_init_ || is_module_loading_) {
+-                    CUDA_CHECK(cudaStreamSynchronize(copy_stream_));
++                    // Preserve the per-task DMA completion boundary without
++                    // spinning a host core needed by AMX and module loading.
++                    CUDA_CHECK(cudaEventRecord(copy_throttle_event_, copy_stream_));
++                    CUDA_CHECK(cudaEventSynchronize(copy_throttle_event_));
+                 }
+             }
+             record_layer_complete(layer_idx);
+diff --git a/shm_manager/csrc/model_manager.h b/shm_manager/csrc/model_manager.h
+index 7ff89e5d0..cbcd96af2 100644
+--- a/shm_manager/csrc/model_manager.h
++++ b/shm_manager/csrc/model_manager.h
+@@ -122,6 +122,8 @@ private:
+     };
+ 
+     cudaStream_t copy_stream_;
++    // Reused only under submission_mutex_; sleep the host while pacing DMA.
++    cudaEvent_t copy_throttle_event_;
+     std::vector<cudaEvent_t> copy_layer_events_;
+     std::vector<cudaEvent_t> layer_start_events_;
+     std::vector<std::vector<CopyTask>> copy_tasks_by_layer_;
+diff --git a/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py b/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
+index 4a39cfcca..8f28d6e45 100644
+--- a/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
++++ b/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
+@@ -4,11 +4,14 @@ from pathlib import Path
+ import subprocess
+ import time
+ import argparse
++import hashlib
+ 
+ parser = argparse.ArgumentParser()
+ parser.add_argument('--name', default='baseline')
+ parser.add_argument('--prompt-tokens', type=int, default=128)
+ parser.add_argument('--arch-profile', action='store_true')
++parser.add_argument('--gpu-devices', default='0,1,4,5',
++                    help='TP ranks ordered to match the two CPU NUMA shards')
+ args = parser.parse_args()
+ 
+ checkpoint = Path('/workspace/models/Qwen2.5-72B')
+@@ -24,7 +27,7 @@ cpu_env.update(VLLM_CPU_OMP_THREADS_BIND='0-47|48-95',
+                VLLM_CPU_KVCACHE_SPACE='4' if args.prompt_tokens > 128 else '1', OMP_NUM_THREADS='48')
+ gpu_env = os.environ.copy()
+ gpu_env.update(VLLM_PROFILE_RELAY='1', VLLM_ATTENTION_BACKEND='FLASH_ATTN',
+-               VLLM_FLASH_ATTN_VERSION='3', CUDA_VISIBLE_DEVICES='0,1,2,3')
++               VLLM_FLASH_ATTN_VERSION='3', CUDA_VISIBLE_DEVICES=args.gpu_devices)
+ if args.arch_profile:
+     gpu_env['VLLM_PROFILE_SHM_ARCH'] = str(folder) + '.arch'
+ test = '/workspace/vllm-gpu/tests/verify_qwen_layerwise_v1.py'
+@@ -44,6 +47,9 @@ if args.arch_profile:
+ for role, repo in [('cpu', '/workspace/vllm-cpu'), ('gpu', '/workspace/vllm-gpu')]:
+     record[role + '_revision'] = subprocess.check_output(
+         ['git', 'rev-parse', 'HEAD'], cwd=repo, text=True).strip()
++    diff = subprocess.check_output(['git', 'diff', 'HEAD'], cwd=repo)
++    record[role + '_diff_sha256'] = hashlib.sha256(diff).hexdigest()
++    Path(str(folder) + '.' + role + '.patch').write_bytes(diff)
+ Path(str(folder) + '.commands.json').write_text(json.dumps(record, indent=2))
+ with open(str(folder) + '.cpu.log', 'w') as cpu_log, open(str(folder) + '.gpu.log', 'w') as gpu_log:
+     cpu = subprocess.Popen(cpu_cmd, cwd='/workspace/vllm-cpu', env=cpu_env,

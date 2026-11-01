@@ -1,0 +1,1724 @@
+{
+  "hidden_nonblocking_14b": {
+    "metadata": {
+      "checkpoint": "/workspace/models/Qwen3-14B",
+      "gpu_repo": "/root/vllm-gpu",
+      "config_sha256": "e73c3664ca09b10a673fef0c22e8a6b456201d49bd4713c9691f775720e8857a",
+      "cpu_tp": 2,
+      "gpu_tp": 1,
+      "cpu_layers": 8,
+      "cpu_prefix_tokens": 0,
+      "cpu_inference_concurrent": true,
+      "prompt_tokens": 128,
+      "chunk_tokens": 4096,
+      "max_model_len": 4200,
+      "visible_gpus": "0",
+      "flash_attn_version_override": "3",
+      "weight_transfer_artifact_sha256": {
+        "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+        "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+        "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+        "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+        "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+        "vllm-gpu/vllm/v1/worker/gpu_worker.py": "cf4963f07ff8a2d475fa1d022d5f959ceedd8387fdf9cbe55d354fe94e1bdd9f",
+        "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "704cbb8775544a03be84352c3582ffe17175cc4be4b0ffa664eb654cc19ee97b"
+      },
+      "architecture_profile_directory": null,
+      "warmup_host_profile_directory": null,
+      "first_step_host_profile_directory": null,
+      "native_api_preload": "/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4:/workspace/vllm-cpu/.venv/lib/libiomp5.so:",
+      "warmup_cuda_trace_directory": null,
+      "warmup_cuda_completion_diagnostic": false,
+      "host_weight_wait_diagnostic": false,
+      "latency_measurement_valid": false,
+      "trials": 3,
+      "revisions": {
+        "sllm": "a779173258d6c9900ea30b3763bb2285f1a93215",
+        "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+        "vllm-gpu": "21b5861960d3bb705d3f7ed3a3f5af5fe1ede83d"
+      }
+    },
+    "samples": [
+      {
+        "trial": 0,
+        "process_first_model": true,
+        "gpu_pids": [
+          1702443
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657462327079996",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.17359691113233566,
+          "generation_seconds": 0.2634454779326916,
+          "generation_started_at": 6657463.038651009,
+          "generation_finished_at": 6657463.302096487,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.8836637232452631,
+          "cpu_start": 6657462.330054831,
+          "cpu_end": 6657463.213718554,
+          "gpu_ready": 6657463.037398329,
+          "create_seconds": 0.27889198437333107,
+          "lazy_seconds": 0.4313986813649535,
+          "request_started_at": 6657462.325169994,
+          "first_token_seconds": 0.8870779266580939,
+          "model_create_started_at": 6657462.327162847,
+          "model_create_to_first_token_seconds": 0.885085073299706,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9778873007744551
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.121254,
+              "0": 0.125481
+            },
+            "model_seconds": 0.125481
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.030869181267917156,
+          "generation_seconds": 0.12158986832946539,
+          "generation_started_at": 6657463.304233039,
+          "generation_finished_at": 6657463.425822907,
+          "cold": false,
+          "request_started_at": 6657463.3033616,
+          "first_token_seconds": 0.03174061980098486,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.12337279878556728
+        }
+      },
+      {
+        "trial": 0,
+        "process_first_model": false,
+        "gpu_pids": [
+          1702443
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657464146665368",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.4791864715516567,
+          "generation_seconds": 0.5685412213206291,
+          "generation_started_at": 6657464.502794004,
+          "generation_finished_at": 6657465.071335225,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.834121510386467,
+          "cpu_start": 6657464.149485304,
+          "cpu_end": 6657464.983606814,
+          "gpu_ready": 6657464.502179618,
+          "create_seconds": 0.2711727162823081,
+          "lazy_seconds": 0.08432012796401978,
+          "request_started_at": 6657464.146615621,
+          "first_token_seconds": 0.8353648548945785,
+          "model_create_started_at": 6657464.146750131,
+          "model_create_to_first_token_seconds": 0.8352303449064493,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.925619357265532
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.135847,
+              "0": 0.136625
+            },
+            "model_seconds": 0.136625
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.030833079479634762,
+          "generation_seconds": 0.1184289250522852,
+          "generation_started_at": 6657465.073366131,
+          "generation_finished_at": 6657465.191795056,
+          "cold": false,
+          "request_started_at": 6657465.072594424,
+          "first_token_seconds": 0.03160478640347719,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.11992410849779844
+        }
+      },
+      {
+        "trial": 1,
+        "process_first_model": true,
+        "gpu_pids": [
+          1703730
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657494005974209",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.21529233641922474,
+          "generation_seconds": 0.30972599796950817,
+          "generation_started_at": 6657494.662491791,
+          "generation_finished_at": 6657494.972217789,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.8703253054991364,
+          "cpu_start": 6657494.008700872,
+          "cpu_end": 6657494.879026177,
+          "gpu_ready": 6657494.661765916,
+          "create_seconds": 0.23732577729970217,
+          "lazy_seconds": 0.418441291898489,
+          "request_started_at": 6657494.005946462,
+          "first_token_seconds": 0.8718376653268933,
+          "model_create_started_at": 6657494.006034528,
+          "model_create_to_first_token_seconds": 0.8717495994642377,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9671536693349481
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "0": 0.088073,
+              "1": 0.088995
+            },
+            "model_seconds": 0.088995
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.030866269953548908,
+          "generation_seconds": 0.11992829293012619,
+          "generation_started_at": 6657494.974178944,
+          "generation_finished_at": 6657495.094107237,
+          "cold": false,
+          "request_started_at": 6657494.973444181,
+          "first_token_seconds": 0.03160103317350149,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.12145073618739843
+        }
+      },
+      {
+        "trial": 1,
+        "process_first_model": false,
+        "gpu_pids": [
+          1703730
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657495609106583",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.47678630892187357,
+          "generation_seconds": 0.57233502343297,
+          "generation_started_at": 6657496.09505518,
+          "generation_finished_at": 6657496.667390203,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.9613401927053928,
+          "cpu_start": 6657495.611741974,
+          "cpu_end": 6657496.573082167,
+          "gpu_ready": 6657496.094395136,
+          "create_seconds": 0.3723013158887625,
+          "lazy_seconds": 0.11296098120510578,
+          "request_started_at": 6657495.609072854,
+          "first_token_seconds": 0.9627686347812414,
+          "model_create_started_at": 6657495.609157214,
+          "model_create_to_first_token_seconds": 0.9626842746511102,
+          "first_token_source": "gpu",
+          "relay_seconds": 1.0592883182689548
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.079302,
+              "0": 0.079484
+            },
+            "model_seconds": 0.079484
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.03082833718508482,
+          "generation_seconds": 0.11862140521407127,
+          "generation_started_at": 6657496.669406077,
+          "generation_finished_at": 6657496.788027482,
+          "cold": false,
+          "request_started_at": 6657496.668693773,
+          "first_token_seconds": 0.031540640629827976,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.12023293878883123
+        }
+      },
+      {
+        "trial": 2,
+        "process_first_model": true,
+        "gpu_pids": [
+          1705289
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657526039317289",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.2644022908061743,
+          "generation_seconds": 0.3534147394821048,
+          "generation_started_at": 6657526.696582854,
+          "generation_finished_at": 6657527.049997593,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.919522300362587,
+          "cpu_start": 6657526.04263997,
+          "cpu_end": 6657526.96216227,
+          "gpu_ready": 6657526.695832387,
+          "create_seconds": 0.2906447760760784,
+          "lazy_seconds": 0.3658485412597656,
+          "request_started_at": 6657526.039291033,
+          "first_token_seconds": 0.9216941120103002,
+          "model_create_started_at": 6657526.039374324,
+          "model_create_to_first_token_seconds": 0.9216108210384846,
+          "first_token_source": "gpu",
+          "relay_seconds": 1.0115463035181165
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.100861,
+              "0": 0.100131
+            },
+            "model_seconds": 0.100861
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.03075979184359312,
+          "generation_seconds": 0.12034457921981812,
+          "generation_started_at": 6657527.051908558,
+          "generation_finished_at": 6657527.172253137,
+          "cold": false,
+          "request_started_at": 6657527.05120709,
+          "first_token_seconds": 0.0314612602815032,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.12212685495615005
+        }
+      },
+      {
+        "trial": 2,
+        "process_first_model": false,
+        "gpu_pids": [
+          1705289
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657527785954563",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.47688907384872437,
+          "generation_seconds": 0.5651467526331544,
+          "generation_started_at": 6657528.093343154,
+          "generation_finished_at": 6657528.658489906,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.7830428788438439,
+          "cpu_start": 6657527.788550907,
+          "cpu_end": 6657528.571593786,
+          "gpu_ready": 6657528.092611607,
+          "create_seconds": 0.2235521413385868,
+          "lazy_seconds": 0.08307856135070324,
+          "request_started_at": 6657527.785921704,
+          "first_token_seconds": 0.7843105234205723,
+          "model_create_started_at": 6657527.786003568,
+          "model_create_to_first_token_seconds": 0.784228659234941,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.8734529577195644
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.083641,
+              "0": 0.08446
+            },
+            "model_seconds": 0.08446
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-527flht_/model-resident-cpu-527flht_",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.03068503364920616,
+          "generation_seconds": 0.11730349902063608,
+          "generation_started_at": 6657528.66036387,
+          "generation_finished_at": 6657528.777667369,
+          "cold": false,
+          "request_started_at": 6657528.659656737,
+          "first_token_seconds": 0.03139216639101505,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.11869173683226109
+        }
+      }
+    ],
+    "original_safetensors_exact": true
+  },
+  "hidden_nonblocking_32b_tp2": {
+    "metadata": {
+      "checkpoint": "/workspace/models/Qwen3-32B",
+      "gpu_repo": "/root/vllm-gpu",
+      "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+      "cpu_tp": 2,
+      "gpu_tp": 2,
+      "cpu_layers": 13,
+      "cpu_prefix_tokens": 0,
+      "cpu_inference_concurrent": true,
+      "prompt_tokens": 128,
+      "chunk_tokens": 4096,
+      "max_model_len": 4200,
+      "visible_gpus": "0,4",
+      "flash_attn_version_override": "3",
+      "weight_transfer_artifact_sha256": {
+        "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+        "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+        "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+        "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+        "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+        "vllm-gpu/vllm/v1/worker/gpu_worker.py": "cf4963f07ff8a2d475fa1d022d5f959ceedd8387fdf9cbe55d354fe94e1bdd9f",
+        "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "704cbb8775544a03be84352c3582ffe17175cc4be4b0ffa664eb654cc19ee97b"
+      },
+      "architecture_profile_directory": null,
+      "warmup_host_profile_directory": null,
+      "first_step_host_profile_directory": null,
+      "native_api_preload": "/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4:/workspace/vllm-cpu/.venv/lib/libiomp5.so:",
+      "warmup_cuda_trace_directory": null,
+      "warmup_cuda_completion_diagnostic": false,
+      "host_weight_wait_diagnostic": false,
+      "latency_measurement_valid": false,
+      "trials": 2,
+      "revisions": {
+        "sllm": "a779173258d6c9900ea30b3763bb2285f1a93215",
+        "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+        "vllm-gpu": "21b5861960d3bb705d3f7ed3a3f5af5fe1ede83d"
+      }
+    },
+    "samples": [
+      {
+        "trial": 0,
+        "process_first_model": true,
+        "gpu_pids": [
+          1708956,
+          1708957
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-20e1uu2l/model-resident-cpu-20e1uu2l",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657647406086796",
+          "token_ids": [
+            358,
+            1097,
+            198,
+            9707,
+            11,
+            358,
+            1097,
+            198
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.44523561652749777,
+          "generation_seconds": 0.5939937885850668,
+          "generation_started_at": 6657647.832387745,
+          "generation_finished_at": 6657648.426381534,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 13,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 13,
+          "cpu_seconds": 0.8697627605870366,
+          "cpu_start": 6657647.409362434,
+          "cpu_end": 6657648.279125195,
+          "gpu_ready": 6657647.830861097,
+          "create_seconds": 0.1887927334755659,
+          "lazy_seconds": 0.2359568104147911,
+          "request_started_at": 6657647.404615676,
+          "first_token_seconds": 0.8730076858773828,
+          "model_create_started_at": 6657647.406151546,
+          "model_create_to_first_token_seconds": 0.8714718157425523,
+          "first_token_source": "gpu",
+          "relay_seconds": 1.023553534410894
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 13,
+            "rank_seconds": {
+              "0": 0.189514,
+              "1": 0.189432
+            },
+            "model_seconds": 0.189514
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-20e1uu2l/model-resident-cpu-20e1uu2l",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            198,
+            9707,
+            11,
+            358,
+            1097,
+            198
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.04081631638109684,
+          "generation_seconds": 0.19353409577161074,
+          "generation_started_at": 6657648.429919967,
+          "generation_finished_at": 6657648.623454063,
+          "cold": false,
+          "request_started_at": 6657648.428360075,
+          "first_token_seconds": 0.042376209050416946,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.1962069720029831
+        }
+      },
+      {
+        "trial": 0,
+        "process_first_model": false,
+        "gpu_pids": [
+          1708956,
+          1708957
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-20e1uu2l/model-resident-cpu-20e1uu2l",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657649069524871",
+          "token_ids": [
+            358,
+            1097,
+            198,
+            9707,
+            11,
+            358,
+            1097,
+            198
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.47936719935387373,
+          "generation_seconds": 0.6255206670612097,
+          "generation_started_at": 6657649.393838468,
+          "generation_finished_at": 6657650.019359135,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 13,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 13,
+          "cpu_seconds": 0.8023641826584935,
+          "cpu_start": 6657649.072228179,
+          "cpu_end": 6657649.874592362,
+          "gpu_ready": 6657649.392493443,
+          "create_seconds": 0.16106810234487057,
+          "lazy_seconds": 0.16187766939401627,
+          "request_started_at": 6657649.069489061,
+          "first_token_seconds": 0.8037166064605117,
+          "model_create_started_at": 6657649.069582429,
+          "model_create_to_first_token_seconds": 0.8036232385784388,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9513177191838622
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 13,
+            "rank_seconds": {
+              "0": 0.206954,
+              "1": 0.206942
+            },
+            "model_seconds": 0.206954
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-20e1uu2l/model-resident-cpu-20e1uu2l",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            198,
+            9707,
+            11,
+            358,
+            1097,
+            198
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.04043333791196346,
+          "generation_seconds": 0.19167512748390436,
+          "generation_started_at": 6657650.022334109,
+          "generation_finished_at": 6657650.214009237,
+          "cold": false,
+          "request_started_at": 6657650.021128374,
+          "first_token_seconds": 0.04163907282054424,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.19405081681907177
+        }
+      },
+      {
+        "trial": 1,
+        "process_first_model": true,
+        "gpu_pids": [
+          1710088,
+          1710089
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-20e1uu2l/model-resident-cpu-20e1uu2l",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657683654655587",
+          "token_ids": [
+            358,
+            1097,
+            198,
+            9707,
+            11,
+            358,
+            1097,
+            198
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.3957820851355791,
+          "generation_seconds": 0.5817193510010839,
+          "generation_started_at": 6657684.064478136,
+          "generation_finished_at": 6657684.646197487,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 13,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 13,
+          "cpu_seconds": 0.8035671403631568,
+          "cpu_start": 6657683.657837553,
+          "cpu_end": 6657684.461404693,
+          "gpu_ready": 6657684.063092026,
+          "create_seconds": 0.1659264275804162,
+          "lazy_seconds": 0.24248550832271576,
+          "request_started_at": 6657683.654628232,
+          "first_token_seconds": 0.8056319886818528,
+          "model_create_started_at": 6657683.654731477,
+          "model_create_to_first_token_seconds": 0.8055287441238761,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9928641328588128
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 13,
+            "rank_seconds": {
+              "1": 0.202946,
+              "0": 0.204293
+            },
+            "model_seconds": 0.204293
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-20e1uu2l/model-resident-cpu-20e1uu2l",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            198,
+            9707,
+            11,
+            358,
+            1097,
+            198
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.04062139242887497,
+          "generation_seconds": 0.1805372890084982,
+          "generation_started_at": 6657684.64908246,
+          "generation_finished_at": 6657684.829619749,
+          "cold": false,
+          "request_started_at": 6657684.647853199,
+          "first_token_seconds": 0.04185065347701311,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.18300377670675516
+        }
+      },
+      {
+        "trial": 1,
+        "process_first_model": false,
+        "gpu_pids": [
+          1710088,
+          1710089
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-20e1uu2l/model-resident-cpu-20e1uu2l",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657685224240149",
+          "token_ids": [
+            358,
+            1097,
+            198,
+            9707,
+            11,
+            358,
+            1097,
+            198
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.45513125881552696,
+          "generation_seconds": 0.6203108849003911,
+          "generation_started_at": 6657685.557337013,
+          "generation_finished_at": 6657686.177647898,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 13,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 13,
+          "cpu_seconds": 0.7865632753819227,
+          "cpu_start": 6657685.227043014,
+          "cpu_end": 6657686.013606289,
+          "gpu_ready": 6657685.556217824,
+          "create_seconds": 0.13487245794385672,
+          "lazy_seconds": 0.19706002343446016,
+          "request_started_at": 6657685.224194871,
+          "first_token_seconds": 0.7882734006270766,
+          "model_create_started_at": 6657685.224301606,
+          "model_create_to_first_token_seconds": 0.7881666654720902,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9546256950125098
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 13,
+            "rank_seconds": {
+              "1": 0.255572,
+              "0": 0.256461
+            },
+            "model_seconds": 0.256461
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-20e1uu2l/model-resident-cpu-20e1uu2l",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            198,
+            9707,
+            11,
+            358,
+            1097,
+            198
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.04022296518087387,
+          "generation_seconds": 0.183087139390409,
+          "generation_started_at": 6657686.180066505,
+          "generation_finished_at": 6657686.363153645,
+          "cold": false,
+          "request_started_at": 6657686.179095113,
+          "first_token_seconds": 0.04119435790926218,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.18537344504147768
+        }
+      }
+    ],
+    "original_safetensors_exact": true
+  },
+  "native_api_diagnostic": {
+    "metadata": {
+      "checkpoint": "/workspace/models/Qwen3-14B",
+      "gpu_repo": "/root/vllm-gpu",
+      "config_sha256": "e73c3664ca09b10a673fef0c22e8a6b456201d49bd4713c9691f775720e8857a",
+      "cpu_tp": 2,
+      "gpu_tp": 1,
+      "cpu_layers": 8,
+      "cpu_prefix_tokens": 0,
+      "cpu_inference_concurrent": true,
+      "prompt_tokens": 128,
+      "chunk_tokens": 4096,
+      "max_model_len": 4200,
+      "visible_gpus": "0",
+      "flash_attn_version_override": "3",
+      "weight_transfer_artifact_sha256": {
+        "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+        "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+        "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+        "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+        "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+        "vllm-gpu/vllm/v1/worker/gpu_worker.py": "cf4963f07ff8a2d475fa1d022d5f959ceedd8387fdf9cbe55d354fe94e1bdd9f",
+        "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+      },
+      "architecture_profile_directory": null,
+      "warmup_host_profile_directory": "/tmp/relay14-native-host",
+      "warmup_cuda_trace_directory": null,
+      "warmup_cuda_completion_diagnostic": false,
+      "host_weight_wait_diagnostic": false,
+      "latency_measurement_valid": false,
+      "trials": 2,
+      "revisions": {
+        "sllm": "a779173258d6c9900ea30b3763bb2285f1a93215",
+        "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+        "vllm-gpu": "21b5861960d3bb705d3f7ed3a3f5af5fe1ede83d"
+      }
+    },
+    "samples": [
+      {
+        "trial": 0,
+        "process_first_model": true,
+        "gpu_pids": [
+          1692708
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-d6sz5wgg/model-resident-cpu-d6sz5wgg",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657209829435131",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.26166775822639465,
+          "generation_seconds": 0.3729487918317318,
+          "generation_started_at": 6657210.42684682,
+          "generation_finished_at": 6657210.799795612,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.8579918965697289,
+          "cpu_start": 6657209.832409528,
+          "cpu_end": 6657210.690401425,
+          "gpu_ready": 6657210.425849896,
+          "create_seconds": 0.25217632949352264,
+          "lazy_seconds": 0.34421273600310087,
+          "request_started_at": 6657209.828063784,
+          "first_token_seconds": 0.8604507939890027,
+          "model_create_started_at": 6657209.82949184,
+          "model_create_to_first_token_seconds": 0.8590227384120226,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9725606916472316
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.083146,
+              "0": 0.082573
+            },
+            "model_seconds": 0.083146
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-d6sz5wgg/model-resident-cpu-d6sz5wgg",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.03078499808907509,
+          "generation_seconds": 0.1181705566123128,
+          "generation_started_at": 6657210.801574228,
+          "generation_finished_at": 6657210.919744785,
+          "cold": false,
+          "request_started_at": 6657210.800891691,
+          "first_token_seconds": 0.03146753553301096,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.11962000001221895
+        }
+      },
+      {
+        "trial": 0,
+        "process_first_model": false,
+        "gpu_pids": [
+          1692708
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-d6sz5wgg/model-resident-cpu-d6sz5wgg",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657211402825130",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.47038875333964825,
+          "generation_seconds": 0.5616941647604108,
+          "generation_started_at": 6657211.724939286,
+          "generation_finished_at": 6657212.286633451,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.791060640476644,
+          "cpu_start": 6657211.405499252,
+          "cpu_end": 6657212.196559892,
+          "gpu_ready": 6657211.72426576,
+          "create_seconds": 0.23152488842606544,
+          "lazy_seconds": 0.08989381697028875,
+          "request_started_at": 6657211.402775614,
+          "first_token_seconds": 0.7925524255260825,
+          "model_create_started_at": 6657211.402881669,
+          "model_create_to_first_token_seconds": 0.7924463702365756,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.8849268900230527
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.088439,
+              "0": 0.087608
+            },
+            "model_seconds": 0.088439
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-d6sz5wgg/model-resident-cpu-d6sz5wgg",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.030945947393774986,
+          "generation_seconds": 0.11942463926970959,
+          "generation_started_at": 6657212.288747939,
+          "generation_finished_at": 6657212.408172579,
+          "cold": false,
+          "request_started_at": 6657212.288025483,
+          "first_token_seconds": 0.0316684041172266,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.12083318457007408
+        }
+      },
+      {
+        "trial": 1,
+        "process_first_model": true,
+        "gpu_pids": [
+          1693922
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-d6sz5wgg/model-resident-cpu-d6sz5wgg",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657240671437749",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.24358955770730972,
+          "generation_seconds": 0.3362408336251974,
+          "generation_started_at": 6657241.287611192,
+          "generation_finished_at": 6657241.623852026,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.8587077409029007,
+          "cpu_start": 6657240.674141893,
+          "cpu_end": 6657241.532849634,
+          "gpu_ready": 6657241.286928266,
+          "create_seconds": 0.25218535866588354,
+          "lazy_seconds": 0.3632799992337823,
+          "request_started_at": 6657240.671415916,
+          "first_token_seconds": 0.859784834086895,
+          "model_create_started_at": 6657240.671487512,
+          "model_create_to_first_token_seconds": 0.8597132377326488,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9532466130331159
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.096861,
+              "0": 0.096247
+            },
+            "model_seconds": 0.096861
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-d6sz5wgg/model-resident-cpu-d6sz5wgg",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.031078137457370758,
+          "generation_seconds": 0.11949854623526335,
+          "generation_started_at": 6657241.625614018,
+          "generation_finished_at": 6657241.745112564,
+          "cold": false,
+          "request_started_at": 6657241.624962618,
+          "first_token_seconds": 0.03172953799366951,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.12107820808887482
+        }
+      },
+      {
+        "trial": 1,
+        "process_first_model": false,
+        "gpu_pids": [
+          1693922
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-d6sz5wgg/model-resident-cpu-d6sz5wgg",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657242265109601",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.47305679228156805,
+          "generation_seconds": 0.5635847486555576,
+          "generation_started_at": 6657242.612810688,
+          "generation_finished_at": 6657243.176395437,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.8182608103379607,
+          "cpu_start": 6657242.268736917,
+          "cpu_end": 6657243.086997727,
+          "gpu_ready": 6657242.61214963,
+          "create_seconds": 0.25584231968969107,
+          "lazy_seconds": 0.09117011819034815,
+          "request_started_at": 6657242.265071928,
+          "first_token_seconds": 0.8207955528050661,
+          "model_create_started_at": 6657242.265166127,
+          "model_create_to_first_token_seconds": 0.820701353251934,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9122765529900789
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.117445,
+              "0": 0.117032
+            },
+            "model_seconds": 0.117445
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-d6sz5wgg/model-resident-cpu-d6sz5wgg",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.03100324422121048,
+          "generation_seconds": 0.11883836332708597,
+          "generation_started_at": 6657243.178373042,
+          "generation_finished_at": 6657243.297211405,
+          "cold": false,
+          "request_started_at": 6657243.17766081,
+          "first_token_seconds": 0.03171547595411539,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.12032533157616854
+        }
+      }
+    ],
+    "original_safetensors_exact": true
+  },
+  "first_step_host_diagnostic": {
+    "metadata": {
+      "checkpoint": "/workspace/models/Qwen3-14B",
+      "gpu_repo": "/root/vllm-gpu",
+      "config_sha256": "e73c3664ca09b10a673fef0c22e8a6b456201d49bd4713c9691f775720e8857a",
+      "cpu_tp": 2,
+      "gpu_tp": 1,
+      "cpu_layers": 8,
+      "cpu_prefix_tokens": 0,
+      "cpu_inference_concurrent": true,
+      "prompt_tokens": 128,
+      "chunk_tokens": 4096,
+      "max_model_len": 4200,
+      "visible_gpus": "0",
+      "flash_attn_version_override": "3",
+      "weight_transfer_artifact_sha256": {
+        "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+        "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+        "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+        "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+        "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+        "vllm-gpu/vllm/v1/worker/gpu_worker.py": "cf4963f07ff8a2d475fa1d022d5f959ceedd8387fdf9cbe55d354fe94e1bdd9f",
+        "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+      },
+      "architecture_profile_directory": null,
+      "warmup_host_profile_directory": null,
+      "first_step_host_profile_directory": "/tmp/relay14-first-step-host",
+      "native_api_preload": "/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4:/workspace/vllm-cpu/.venv/lib/libiomp5.so:",
+      "warmup_cuda_trace_directory": null,
+      "warmup_cuda_completion_diagnostic": false,
+      "host_weight_wait_diagnostic": false,
+      "latency_measurement_valid": false,
+      "trials": 2,
+      "revisions": {
+        "sllm": "a779173258d6c9900ea30b3763bb2285f1a93215",
+        "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+        "vllm-gpu": "21b5861960d3bb705d3f7ed3a3f5af5fe1ede83d"
+      }
+    },
+    "samples": [
+      {
+        "trial": 0,
+        "process_first_model": true,
+        "gpu_pids": [
+          1697214
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-jnq84x66/model-resident-cpu-jnq84x66",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657328983684887",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.2472806228324771,
+          "generation_seconds": 0.33889138232916594,
+          "generation_started_at": 6657329.62560902,
+          "generation_finished_at": 6657329.964500402,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.8848740831017494,
+          "cpu_start": 6657328.986692555,
+          "cpu_end": 6657329.871566638,
+          "gpu_ready": 6657329.624719135,
+          "create_seconds": 0.24439105857163668,
+          "lazy_seconds": 0.39662058744579554,
+          "request_started_at": 6657328.982266733,
+          "first_token_seconds": 0.89062290918082,
+          "model_create_started_at": 6657328.983749051,
+          "model_create_to_first_token_seconds": 0.889140591956675,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.9831348555162549
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "0": 0.169599,
+              "1": 0.175831
+            },
+            "model_seconds": 0.175831
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-jnq84x66/model-resident-cpu-jnq84x66",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.03075136709958315,
+          "generation_seconds": 0.118407535366714,
+          "generation_started_at": 6657329.966560183,
+          "generation_finished_at": 6657330.084967718,
+          "cold": false,
+          "request_started_at": 6657329.965776225,
+          "first_token_seconds": 0.031535325571894646,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.11978023312985897
+        }
+      },
+      {
+        "trial": 0,
+        "process_first_model": false,
+        "gpu_pids": [
+          1697214
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-jnq84x66/model-resident-cpu-jnq84x66",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657330574016838",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.47682632226496935,
+          "generation_seconds": 0.5695725940167904,
+          "generation_started_at": 6657330.91190177,
+          "generation_finished_at": 6657331.481474364,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.8098816508427262,
+          "cpu_start": 6657330.577278052,
+          "cpu_end": 6657331.387159703,
+          "gpu_ready": 6657330.911316478,
+          "create_seconds": 0.2457695733755827,
+          "lazy_seconds": 0.0915115149691701,
+          "request_started_at": 6657330.573979512,
+          "first_token_seconds": 0.8147485805675387,
+          "model_create_started_at": 6657330.574072878,
+          "model_create_to_first_token_seconds": 0.814655214548111,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.909631091170013
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.113063,
+              "0": 0.113339
+            },
+            "model_seconds": 0.113339
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-jnq84x66/model-resident-cpu-jnq84x66",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.030786913819611073,
+          "generation_seconds": 0.11806635092943907,
+          "generation_started_at": 6657331.484700159,
+          "generation_finished_at": 6657331.60276651,
+          "cold": false,
+          "request_started_at": 6657331.483871181,
+          "first_token_seconds": 0.03161589242517948,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.11960477102547884
+        }
+      },
+      {
+        "trial": 1,
+        "process_first_model": true,
+        "gpu_pids": [
+          1698509
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-jnq84x66/model-resident-cpu-jnq84x66",
+          "generation": 1,
+          "ready": true,
+          "request_id": "relay-6657360026574007",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.3400853741914034,
+          "generation_seconds": 0.43015616200864315,
+          "generation_started_at": 6657360.676032002,
+          "generation_finished_at": 6657361.106188164,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.9845024673268199,
+          "cpu_start": 6657360.02991103,
+          "cpu_end": 6657361.014413497,
+          "gpu_ready": 6657360.675340038,
+          "create_seconds": 0.28949700202792883,
+          "lazy_seconds": 0.3592426534742117,
+          "request_started_at": 6657360.026542089,
+          "first_token_seconds": 0.9895752873271704,
+          "model_create_started_at": 6657360.026646023,
+          "model_create_to_first_token_seconds": 0.9894713535904884,
+          "first_token_source": "gpu",
+          "relay_seconds": 1.080857996828854
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "1": 0.117768,
+              "0": 0.119989
+            },
+            "model_seconds": 0.119989
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-jnq84x66/model-resident-cpu-jnq84x66",
+          "generation": 1,
+          "ready": true,
+          "request_id": "resident-1-7",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.030761861242353916,
+          "generation_seconds": 0.11718133836984634,
+          "generation_started_at": 6657361.108526792,
+          "generation_finished_at": 6657361.225708131,
+          "cold": false,
+          "request_started_at": 6657361.107709357,
+          "first_token_seconds": 0.03157929703593254,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.11880124174058437
+        }
+      },
+      {
+        "trial": 1,
+        "process_first_model": false,
+        "gpu_pids": [
+          1698509
+        ],
+        "response": {
+          "model": "/tmp/resident-cpu-jnq84x66/model-resident-cpu-jnq84x66",
+          "generation": 2,
+          "ready": true,
+          "request_id": "relay-6657361742333404",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.4759841375052929,
+          "generation_seconds": 0.5638229055330157,
+          "generation_started_at": 6657362.047283476,
+          "generation_finished_at": 6657362.611106382,
+          "cold": true,
+          "plan": {
+            "cpu_layers": 8,
+            "cpu_prefix_tokens": 0
+          },
+          "cpu_layers": 8,
+          "cpu_seconds": 0.7764425212517381,
+          "cpu_start": 6657361.745513476,
+          "cpu_end": 6657362.521955998,
+          "gpu_ready": 6657362.046614567,
+          "create_seconds": 0.2232330609112978,
+          "lazy_seconds": 0.08102174196392298,
+          "request_started_at": 6657361.742299519,
+          "first_token_seconds": 0.7809680951759219,
+          "model_create_started_at": 6657361.742389262,
+          "model_create_to_first_token_seconds": 0.7808783520013094,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.8698493856936693
+        },
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 8,
+            "rank_seconds": {
+              "0": 0.094663,
+              "1": 0.095018
+            },
+            "model_seconds": 0.095018
+          }
+        ],
+        "warm_response": {
+          "model": "/tmp/resident-cpu-jnq84x66/model-resident-cpu-jnq84x66",
+          "generation": 2,
+          "ready": true,
+          "request_id": "resident-2-13",
+          "token_ids": [
+            358,
+            1097,
+            271,
+            32313,
+            11,
+            358,
+            1184,
+            311
+          ],
+          "num_cached_tokens": 0,
+          "first_output_seconds": 0.030656438320875168,
+          "generation_seconds": 0.11761347390711308,
+          "generation_started_at": 6657362.613145067,
+          "generation_finished_at": 6657362.730758541,
+          "cold": false,
+          "request_started_at": 6657362.612476542,
+          "first_token_seconds": 0.03132496401667595,
+          "model_create_started_at": null,
+          "model_create_to_first_token_seconds": null,
+          "first_token_source": "gpu",
+          "relay_seconds": 0.11917439289391041
+        }
+      }
+    ],
+    "original_safetensors_exact": true
+  }
+}

@@ -1,0 +1,113 @@
+diff --git a/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py b/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
+index 8f28d6e45..3befd8680 100644
+--- a/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
++++ b/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
+@@ -10,18 +10,27 @@ parser = argparse.ArgumentParser()
+ parser.add_argument('--name', default='baseline')
+ parser.add_argument('--prompt-tokens', type=int, default=128)
+ parser.add_argument('--arch-profile', action='store_true')
+-parser.add_argument('--gpu-devices', default='0,1,4,5',
++parser.add_argument('--model', choices=['Qwen2.5-72B', 'Qwen3-32B'],
++                    default='Qwen2.5-72B')
++parser.add_argument('--gpu-devices', default=None,
+                     help='TP ranks ordered to match the two CPU NUMA shards')
+ args = parser.parse_args()
+ 
+-checkpoint = Path('/workspace/models/Qwen2.5-72B')
++gpu_tp = 4 if args.model == 'Qwen2.5-72B' else 2
++args.gpu_devices = args.gpu_devices or ('0,1,4,5' if gpu_tp == 4 else '0,4')
++if len(args.gpu_devices.split(',')) != gpu_tp:
++    parser.error('--gpu-devices must match model TP degree')
++checkpoint = Path('/workspace/models') / args.model
+ deadline = time.monotonic() + 1800
+-while not (checkpoint / 'download-complete.json').exists():
++while not (checkpoint / ('download-complete.json' if gpu_tp == 4 else
++                         'model.safetensors.index.json')).exists():
+     if time.monotonic() > deadline:
+-        raise TimeoutError('72B download did not complete')
++        raise TimeoutError(f'{args.model} checkpoint did not become ready')
+     time.sleep(1)
+-print('72B verified checkpoint ready; starting CPU TP2 producer', flush=True)
+-folder = Path(f'/tmp/relay-init72-tp4-{args.name}-20261013')
++print(f'{args.model} checkpoint ready; starting CPU TP2 producer', flush=True)
++folder = Path(f'/tmp/relay-init{72 if gpu_tp == 4 else 32}-tp{gpu_tp}-{args.name}-20261013')
++if folder.exists() or Path(str(folder) + '.commands.json').exists():
++    parser.error('use a fresh --name; existing run artifacts must not be overwritten')
+ cpu_env = os.environ.copy()
+ cpu_env.update(VLLM_CPU_OMP_THREADS_BIND='0-47|48-95',
+                VLLM_CPU_KVCACHE_SPACE='4' if args.prompt_tokens > 128 else '1', OMP_NUM_THREADS='48')
+@@ -36,7 +45,7 @@ common = ['--folder', str(folder), '--cpu-layers', '8',
+ cpu_cmd = ['timeout', '900', '/workspace/vllm-cpu/.venv/bin/python', test,
+            '--role', 'cpu', '--checkpoint', str(checkpoint), '--tp', '2', *common]
+ gpu_cmd = ['timeout', '600', '/workspace/vllm-gpu/.venv/bin/python', test,
+-           '--role', 'gpu', '--tp', '4', *common]
++           '--role', 'gpu', '--tp', str(gpu_tp), *common]
+ record = {'checkpoint': str(checkpoint), 'cpu_command': cpu_cmd,
+           'gpu_command': gpu_cmd, 'cpu_environment': {k: cpu_env[k] for k in
+           ('VLLM_CPU_OMP_THREADS_BIND', 'VLLM_CPU_KVCACHE_SPACE', 'OMP_NUM_THREADS')},
+@@ -63,13 +72,13 @@ with open(str(folder) + '.cpu.log', 'w') as cpu_log, open(str(folder) + '.gpu.lo
+             if time.monotonic() > ready_deadline:
+                 raise TimeoutError('CPU preparation timed out')
+             time.sleep(1)
+-        print('CPU packed weights ready; starting GPU TP4 initialization test', flush=True)
++        print(f'CPU packed weights ready; starting GPU TP{gpu_tp} initialization test', flush=True)
+         gpu = subprocess.Popen(gpu_cmd, cwd='/workspace/vllm-gpu', env=gpu_env,
+                                stdout=gpu_log, stderr=subprocess.STDOUT)
+         record['gpu_exit_code'] = gpu.wait()
+         record['cpu_exit_code'] = cpu.wait(timeout=30)
+         assert record['gpu_exit_code'] == record['cpu_exit_code'] == 0, record
+-        print('PASS: real Qwen2.5-72B CPU TP2 -> GPU TP4 relay', flush=True)
++        print(f'PASS: real {args.model} CPU TP2 -> GPU TP{gpu_tp} relay', flush=True)
+     finally:
+         if folder.exists():
+             (folder / 'stop').touch()
+diff --git a/vllm/model_executor/model_loader/shared_memory_loader.py b/vllm/model_executor/model_loader/shared_memory_loader.py
+index f5ef3ed25..54374d037 100644
+--- a/vllm/model_executor/model_loader/shared_memory_loader.py
++++ b/vllm/model_executor/model_loader/shared_memory_loader.py
+@@ -26,6 +26,17 @@ from shm_manager.torch import (
+ )
+ from vllm.distributed import get_tensor_model_parallel_rank, get_tensor_model_parallel_world_size
+ 
++def _thread_runqueue_wait_seconds() -> Optional[float]:
++    """Linux scheduler delay, distinct from time blocked on native work."""
++    if not os.environ.get("VLLM_PROFILE_RELAY"):
++        return None
++    try:
++        with open("/proc/thread-self/schedstat") as stats:
++            return int(stats.read().split()[1]) / 1e9
++    except (OSError, ValueError, IndexError):
++        return None
++
++
+ class SharedMemoryLoader(BaseModelLoader):
+     # DEFAULT_PATTERN = "model-rank-{rank}-part-{part}.safetensors"
+ 
+@@ -176,6 +187,7 @@ class SharedMemoryLoader(BaseModelLoader):
+ 
+             start_time_init_architecture = time.perf_counter()
+             architecture_thread_start = time.thread_time()
++            architecture_runqueue_start = _thread_runqueue_wait_seconds()
+             # Optional Python-only diagnostics: no CUDA events or stream fences,
+             # so the weight transfer continues concurrently with construction.
+             profile_dir = os.environ.get("VLLM_PROFILE_SHM_ARCH")
+@@ -203,12 +215,19 @@ class SharedMemoryLoader(BaseModelLoader):
+                         f"architecture-pid-{os.getpid()}-{uuid.uuid4().hex}.prof"))
+             end_time_init_architecture = time.perf_counter()
+             architecture_thread_seconds = time.thread_time() - architecture_thread_start
++            architecture_runqueue_end = _thread_runqueue_wait_seconds()
+             print(f"init architecture takes {end_time_init_architecture - start_time_init_architecture} seconds")
+             if os.environ.get('VLLM_PROFILE_RELAY'):
+                 print(f'[relay architecture] rank={get_tensor_model_parallel_rank()} '
+                       f'wall={end_time_init_architecture - start_time_init_architecture:.6f}s '
+                       f'host_thread_cpu={architecture_thread_seconds:.6f}s',
+                       flush=True)
++                if (architecture_runqueue_start is not None
++                        and architecture_runqueue_end is not None):
++                    print(f'[relay architecture scheduling] '
++                          f'rank={get_tensor_model_parallel_rank()} '
++                          f'runqueue_wait={architecture_runqueue_end - architecture_runqueue_start:.6f}s',
++                          flush=True)
+ 
+             t_sd = time.perf_counter()
+             state_dict = model.state_dict()

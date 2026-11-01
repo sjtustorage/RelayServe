@@ -1,0 +1,344 @@
+# ---------------------------------------------------------------------------- #
+#  serverlessllm                                                               #
+#  copyright (c) serverlessllm team 2024                                       #
+#                                                                              #
+#  licensed under the apache license, version 2.0 (the "license");             #
+#  you may not use this file except in compliance with the license.            #
+#                                                                              #
+#  you may obtain a copy of the license at                                     #
+#                                                                              #
+#                  http://www.apache.org/licenses/license-2.0                  #
+#                                                                              #
+#  unless required by applicable law or agreed to in writing, software         #
+#  distributed under the license is distributed on an "as is" basis,           #
+#  without warranties or conditions of any kind, either express or implied.    #
+#  see the license for the specific language governing permissions and         #
+#  limitations under the license.                                              #
+# ---------------------------------------------------------------------------- #
+import json
+import os
+import sys
+
+import click
+import ray
+import requests
+
+from sllm.cli.ray_dev_shm_cleanup import (
+    cleanup_dev_shm_all_cluster_nodes,
+    run_dev_shm_rm,
+)
+from sllm.sllm.controller import SllmController
+from sllm.sllm.logger import init_logger
+
+logger = init_logger(__name__)
+
+
+# ----------------------------- START COMMAND ----------------------------- #
+def start_server(
+    host="0.0.0.0",
+    port=8343,
+    hydraserve=False,
+    serverlessllm=False,
+    vllm=False,
+    static=False,
+    original_amx=False,
+):
+    """Start the SLLM server using Ray and uvicorn."""
+    import uvicorn
+    from sllm.sllm.app_lib import create_app
+    controller = None
+    try:
+        # Initialize Ray if not already initialized
+        if not ray.is_initialized():
+            click.echo("Initializing Ray...")
+            # Pass logging config to workers to prevent duplicate handlers
+            ray.init(
+                ignore_reinit_error=True,
+            )
+        else:
+            click.echo("Ray already initialized")
+
+        # Create the FastAPI app
+        click.echo("Creating FastAPI application...")
+        app = create_app()
+
+        # Create and start the controller
+        click.echo("Starting SLLM controller...")
+        controller_cls = ray.remote(SllmController)
+        controller_config = {}
+        if hydraserve:
+            controller_config["hydraserve"] = True
+        if serverlessllm:
+            controller_config["serverlessllm"] = True
+        if vllm:
+            controller_config["vllm"] = True
+        if static:
+            controller_config["static"] = True
+        if original_amx:
+            controller_config["original_amx"] = True
+        controller = controller_cls.options(
+            name="controller", num_cpus=1, resources={"gpu_worker_0": 0.001}
+        ).remote(
+            config=controller_config,
+        )
+
+        # Start the controller
+        ray.get(controller.start.remote())
+        click.echo("[✅] SLLM controller started successfully")
+
+        # Start the uvicorn server
+        click.echo(f"[🚀] Starting SLLM server on {host}:{port}...")
+        uvicorn.run(app, host=host, port=port)
+
+    except KeyboardInterrupt:
+        click.echo("Shutting down SLLM server...")
+    except Exception as e:
+        click.echo(f"[❌] Failed to start SLLM server: {e}")
+        sys.exit(1)
+    finally:
+        if controller is None and ray.is_initialized():
+            try:
+                controller = ray.get_actor("controller")
+            except Exception:
+                controller = None
+        if controller is not None:
+            try:
+                ray.get(controller.shutdown.remote())
+                click.echo("[✅] SLLM server shut down successfully")
+            except Exception as e:
+                click.echo(f"[⚠️] Warning during shutdown: {e}")
+            finally:
+                try:
+                    ray.kill(controller, no_restart=True)
+                except Exception as e:
+                    click.echo(
+                        f"[⚠️] Warning while removing controller actor: {e}"
+                    )
+        if ray.is_initialized():
+            try:
+                cleanup_dev_shm_all_cluster_nodes()
+            except Exception as e:
+                logger.warning("Cluster /dev/shm cleanup skipped or failed: %s", e)
+            ray.shutdown()
+        # Driver / last-chance local clean (also covers non-cluster Ray or missing strategy)
+        run_dev_shm_rm()
+
+
+# ----------------------------- DEPLOY COMMAND ----------------------------- #
+def read_config(config_path: str) -> dict:
+    try:
+        with open(config_path, "r") as file:
+            return json.load(file)
+    except FileNotFoundError:
+        print(f"[ERROR] Config file {config_path} not found.")
+        sys.exit(1)
+    except json.JSONDecodeError:
+        print(f"[ERROR] JSON decode error in config file {config_path}.")
+        sys.exit(1)
+
+
+def deep_update(original: dict, updates: dict) -> dict:
+    for key, value in updates.items():
+        if isinstance(value, dict) and isinstance(original.get(key), dict):
+            original[key] = deep_update(original.get(key, {}), value)
+        else:
+            original[key] = value
+    return original
+
+
+def deploy_model(
+    model,
+    model_path=None,
+    config=None,
+    backend=None,
+    num_gpus=None,
+    target=None,
+    min_instances=None,
+    max_instances=None,
+    precision=None,
+    placement_node_id=None,
+    shared_cpu_model=None,
+):
+    default_config_path = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "default_config.json")
+    )
+
+    if not os.path.exists(default_config_path):
+        print(f"[ERROR] Default config not found at {default_config_path}")
+        return
+
+    config_data = read_config(default_config_path)
+
+    if config:
+        # Try to find the config file in multiple locations
+        config_path = None
+        search_paths = [
+            os.path.abspath(
+                config
+            ),  # Absolute or relative to current directory
+            os.path.join(
+                os.path.dirname(__file__), config
+            ),  # Relative to sllm package
+            os.path.expanduser(f"~/.sllm/{config}"),  # User config directory
+            os.path.join("/etc/sllm", config),  # System config directory
+        ]
+
+        for path in search_paths:
+            if os.path.exists(path):
+                config_path = path
+                break
+
+        if not config_path:
+            print(
+                f"[ERROR] Config file '{config}' not found in any of these locations:"
+            )
+            for path in search_paths:
+                print(f"  - {path}")
+            print("")
+            print("Available config files:")
+            # Show available config files in current directory
+            current_dir_configs = [
+                f for f in os.listdir(".") if f.endswith(".json")
+            ]
+            if current_dir_configs:
+                for cf in current_dir_configs:
+                    print(f"  - {cf}")
+            else:
+                print("  - No JSON config files found in current directory")
+
+            # Show the default config location
+            default_config_rel = os.path.join(
+                os.path.dirname(__file__), "default_config.json"
+            )
+            if os.path.exists(default_config_rel):
+                print(f"  - {default_config_rel} (default config)")
+            sys.exit(1)  # Exit with error code
+
+        user_config = read_config(config_path)
+        config_data = deep_update(config_data, user_config)
+
+    if model:
+        config_data["model"] = model
+    if model_path:
+        config_data["model_path"] = model_path
+
+    # Resolve the effective path for loading weights:
+    # explicit model_path > pretrained_model_name_or_path from config > model (fallback)
+    effective_path = (
+        config_data.get("model_path")
+        or config_data.get("backend_config", {}).get("pretrained_model_name_or_path")
+        or config_data.get("model")
+    )
+    if effective_path:
+        config_data.setdefault("model_path", effective_path)
+        config_data.setdefault("backend_config", {})[
+            "pretrained_model_name_or_path"
+        ] = effective_path
+
+    if not config_data.get("model"):
+        print("[❌ ERROR] Model name is required!")
+        print("Please specify the model in one of these ways:")
+        print("  1. Command line: --model MODEL_NAME")
+        print("  2. Config file: include 'model' field in your JSON config")
+        print("  3. Both: --config CONFIG_FILE --model MODEL_NAME")
+        print("")
+        print("Examples:")
+        print("  sllm deploy --model microsoft/DialoGPT-small")
+        print("  sllm deploy --config my_config.json")
+        print("  sllm deploy --config my_config.json --model facebook/opt-1.3b")
+        sys.exit(1)
+
+    if backend:
+        config_data["backend"] = backend
+    if num_gpus is not None:
+        config_data["num_gpus"] = num_gpus
+    if target is not None:
+        config_data.setdefault("auto_scaling_config", {})["target"] = target
+    if min_instances is not None:
+        config_data.setdefault("auto_scaling_config", {})["min_instances"] = min_instances
+    if max_instances is not None:
+        config_data.setdefault("auto_scaling_config", {})["max_instances"] = max_instances
+    if precision:
+        config_data.setdefault("backend_config", {})["precision"] = precision
+    if placement_node_id:
+        config_data.setdefault("backend_config", {})["cpu_placement_node_id"] = placement_node_id
+    if shared_cpu_model:
+        config_data["shared_cpu_model"] = shared_cpu_model
+
+    base_url = os.getenv("LLM_SERVER_URL", "http://127.0.0.1:8343")
+    url = f"{base_url.rstrip('/')}/register"
+    headers = {"Content-Type": "application/json"}
+
+    try:
+        response = requests.post(url, headers=headers, json=config_data, timeout=600)
+        if response.status_code == 200:
+            print(
+                f"[✅ SUCCESS] Model '{config_data['model']}' deployed successfully."
+            )
+        else:
+            print(
+                f"[❌ ERROR] Deploy failed with status {response.status_code}: {response.text}"
+            )
+            sys.exit(1)  # Exit with error code to indicate failure
+    except Exception as e:
+        print(f"[EXCEPTION] Failed to deploy: {str(e)}")
+        sys.exit(1)  # Exit with error code to indicate failure
+
+
+# ----------------------------- DELETE COMMAND ----------------------------- #
+def delete_model(models):
+    if not models:
+        print("[⚠️ WARNING] No model names provided for deletion.")
+        return
+
+    base_url = os.getenv("LLM_SERVER_URL", "http://127.0.0.1:8343")
+    headers = {"Content-Type": "application/json"}
+
+    for model in models:
+        url = f"{base_url.rstrip('/')}/delete"
+        data = {"model": model}
+        try:
+            response = requests.post(url, headers=headers, json=data, timeout=60)
+            if response.status_code == 200:
+                print(
+                    f"[✅ SUCCESS] Delete request for '{model}' sent successfully."
+                )
+            else:
+                print(
+                    f"[❌ ERROR] Failed to delete '{model}'. Status: {response.status_code}, Response: {response.text}"
+                )
+        except Exception as e:
+            print(f"[EXCEPTION] Failed to delete '{model}': {str(e)}")
+
+
+# ----------------------------- STATUS COMMAND ----------------------------- #
+def show_status():
+    """Query the information of registered models."""
+    endpoint = "/v1/models"
+    base_url = os.getenv("LLM_SERVER_URL", "http://127.0.0.1:8343")
+    url = base_url.rstrip("/") + endpoint
+    headers = {"Content-Type": "application/json"}
+
+    try:
+        response = requests.get(url, headers=headers, timeout=30)
+        if response.status_code == 200:
+            try:
+                data = response.json()
+                models = data.get("models", [])
+                if models:
+                    print("Model status retrieved successfully:")
+                    for model in models:
+                        if isinstance(model, dict) and "id" in model:
+                            print(f"- {model['id']}")
+                        else:
+                            print(f"- {model}")
+                else:
+                    print("No models currently deployed.")
+            except ValueError:
+                print("[❌ ERROR] Invalid JSON received from server.")
+        else:
+            print(
+                f"[❌ ERROR] Failed with status {response.status_code}: {response.text}"
+            )
+    except requests.exceptions.RequestException as e:
+        print(f"[EXCEPTION] Failed to query status: {str(e)}")

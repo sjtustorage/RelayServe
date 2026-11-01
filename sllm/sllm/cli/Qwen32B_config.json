@@ -1,0 +1,28 @@
+{
+    "model": "",
+    "model_path": null,
+    "backend": "vllm",
+    "num_gpus": 2,
+    "auto_scaling_config": {
+        "metric": "concurrency",
+        "target": 16,
+        "min_instances": 1,
+        "max_instances": 3,
+        "keep_alive": 60
+    },
+    "backend_config": {
+        "pretrained_model_name_or_path": "",
+        "torch_dtype": "bfloat16",
+        "num_layers": 64,
+        "tensor_parallel_size": 2,
+        "pipeline_parallel_size": 1,
+        "lazy_load": true,
+        "prewarm_gpu_instances": 1,
+        "predictive_prewarm_min_arrivals": 0.3,
+        "predictive_prewarm_threshold": 0.35,
+        "ray_worker_resource_fraction": 0.001,
+        "cpu_placement_node_id": "2",
+        "cpu_backend_runtime_env": {"py_executable": "/workspace/vllm-cpu/.venv/bin/python"},
+        "gpu_backend_runtime_env": {"py_executable": "/workspace/vllm-gpu/.venv/bin/python"}
+    }
+}

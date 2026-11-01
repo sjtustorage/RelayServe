@@ -1,0 +1,75 @@
+{
+  "samples": [
+    {
+      "name": "representative",
+      "lazy_seconds": 1.023,
+      "model_creation_seconds": 0.604,
+      "kv_scheduler_warmup_seconds": 0.413,
+      "creation_to_first_token_seconds": 1.375115292146802,
+      "dummy_warmup_seconds": [
+        0.173,
+        0.194,
+        0.205,
+        0.178
+      ]
+    },
+    {
+      "name": "representative-stability-1",
+      "lazy_seconds": 0.959,
+      "model_creation_seconds": 0.601,
+      "kv_scheduler_warmup_seconds": 0.358,
+      "creation_to_first_token_seconds": 1.2450572093948722,
+      "dummy_warmup_seconds": [
+        0.189,
+        0.181,
+        0.183,
+        0.191
+      ]
+    },
+    {
+      "name": "representative-stability-2",
+      "lazy_seconds": 1.086,
+      "model_creation_seconds": 0.661,
+      "kv_scheduler_warmup_seconds": 0.424,
+      "creation_to_first_token_seconds": 1.4329980183392763,
+      "dummy_warmup_seconds": [
+        0.172,
+        0.182,
+        0.177,
+        0.167
+      ]
+    },
+    {
+      "name": "representative-stability-3",
+      "lazy_seconds": 0.972,
+      "model_creation_seconds": 0.621,
+      "kv_scheduler_warmup_seconds": 0.35,
+      "creation_to_first_token_seconds": 1.2342966105788946,
+      "dummy_warmup_seconds": [
+        0.142,
+        0.155,
+        0.184,
+        0.179
+      ]
+    },
+    {
+      "name": "representative-stability-4",
+      "lazy_seconds": 0.927,
+      "model_creation_seconds": 0.596,
+      "kv_scheduler_warmup_seconds": 0.33,
+      "creation_to_first_token_seconds": 1.1817991267889738,
+      "dummy_warmup_seconds": [
+        0.172,
+        0.181,
+        0.166,
+        0.175
+      ]
+    }
+  ],
+  "minimum": 0.927,
+  "maximum": 1.086,
+  "mean": 0.9934,
+  "median": 0.972,
+  "population_stddev": 0.05567979885021139,
+  "relative_population_stddev": 0.05604972704873303
+}

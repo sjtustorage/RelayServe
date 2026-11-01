@@ -1,0 +1,56 @@
+{
+  "checkpoint": "/workspace/models/Qwen2.5-72B",
+  "cpu_command": [
+    "timeout",
+    "900",
+    "/workspace/vllm-cpu/.venv/bin/python",
+    "/workspace/vllm-gpu/tests/verify_qwen_layerwise_v1.py",
+    "--role",
+    "cpu",
+    "--checkpoint",
+    "/workspace/models/Qwen2.5-72B",
+    "--tp",
+    "2",
+    "--folder",
+    "/tmp/relay-init72-tp4-blockingcopy-20261013",
+    "--cpu-layers",
+    "8",
+    "--prompt-tokens",
+    "128",
+    "--output-tokens",
+    "8"
+  ],
+  "gpu_command": [
+    "timeout",
+    "600",
+    "/workspace/vllm-gpu/.venv/bin/python",
+    "/workspace/vllm-gpu/tests/verify_qwen_layerwise_v1.py",
+    "--role",
+    "gpu",
+    "--tp",
+    "4",
+    "--folder",
+    "/tmp/relay-init72-tp4-blockingcopy-20261013",
+    "--cpu-layers",
+    "8",
+    "--prompt-tokens",
+    "128",
+    "--output-tokens",
+    "8"
+  ],
+  "cpu_environment": {
+    "VLLM_CPU_OMP_THREADS_BIND": "0-47|48-95",
+    "VLLM_CPU_KVCACHE_SPACE": "1",
+    "OMP_NUM_THREADS": "48"
+  },
+  "gpu_environment": {
+    "VLLM_PROFILE_RELAY": "1",
+    "VLLM_ATTENTION_BACKEND": "FLASH_ATTN",
+    "VLLM_FLASH_ATTN_VERSION": "3",
+    "CUDA_VISIBLE_DEVICES": "0,1,2,3"
+  },
+  "cpu_revision": "6a293c679b95ced4134056d22298b375be463330",
+  "gpu_revision": "4d8d8462e9cc45cd3a0e5b04d9df3aefd99fad99",
+  "gpu_exit_code": 0,
+  "cpu_exit_code": 0
+}

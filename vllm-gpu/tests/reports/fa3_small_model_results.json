@@ -1,0 +1,655 @@
+{
+  "runs": [
+    {
+      "label": "8-tp1-fa3-control",
+      "artifact": "/tmp/resident-first-init8-tp1-fa3-control-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-8B",
+        "gpu_repo": "/tmp/relay-fa3-control-gpu-4f063cc",
+        "config_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+        "cpu_tp": 2,
+        "gpu_tp": 1,
+        "cpu_layers": 7,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "bd5eed148e2eae35abd5cd4d0589ff0fbcac412708dc8058c0e84082147e7ee0",
+          "vllm-gpu/shm_manager/csrc/model_manager.h": "8643a77ce43a2d1e315cb662baefb31ceccc91ee82310a117e34bad5a1b78a3c",
+          "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "0517b43bc9881c11493bc50ba3a37b93dc6b626a8961bc245021b9de2eee2001",
+          "vllm-gpu/shm_manager/torch.py": "e46a39d06f4b6916c99df86ad03cfd62373b3dc4753b8507d9b8da260fd16c54",
+          "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "0a5979395d83ea2aba0479c5819db686a08d52259fd478b757dc9b223d2f234a",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "53d8197d6bae56258838089f3a4bc59e8da70d07b6065551beace067d9f4cffc"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8ddaa0fce098b9bfa57a63eec96a4185bf295f08",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "lazy_ms": 761.947,
+          "create_ms": 300.323,
+          "model_create_to_first_token_ms": 1097.549,
+          "cpu_session_ms": 1095.534
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "lazy_ms": 74.331,
+          "create_ms": 228.195,
+          "model_create_to_first_token_ms": 471.815,
+          "cpu_session_ms": 553.173
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "lazy_ms": 379.196,
+          "create_ms": 250.232,
+          "model_create_to_first_token_ms": 662.242,
+          "cpu_session_ms": 660.884
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "lazy_ms": 77.68,
+          "create_ms": 222.934,
+          "model_create_to_first_token_ms": 466.576,
+          "cpu_session_ms": 548.397
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "lazy_ms": 593.08,
+          "create_ms": 523.632,
+          "model_create_to_first_token_ms": 1150.825,
+          "cpu_session_ms": 1149.723
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "lazy_ms": 201.079,
+          "create_ms": 388.705,
+          "model_create_to_first_token_ms": 644.437,
+          "cpu_session_ms": 727.643
+        }
+      ]
+    },
+    {
+      "label": "8-tp1-fa3-final",
+      "artifact": "/tmp/resident-first-init8-tp1-fa3-final-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-8B",
+        "gpu_repo": "/root/vllm-gpu",
+        "config_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+        "cpu_tp": 2,
+        "gpu_tp": 1,
+        "cpu_layers": 7,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+          "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+          "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+          "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+          "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8ddaa0fce098b9bfa57a63eec96a4185bf295f08",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "fd8fab3e2adc8d572729ef0bd53286afb8c18b24"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "lazy_ms": 370.226,
+          "create_ms": 235.002,
+          "model_create_to_first_token_ms": 637.394,
+          "cpu_session_ms": 636.517
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "lazy_ms": 78.074,
+          "create_ms": 214.055,
+          "model_create_to_first_token_ms": 554.778,
+          "cpu_session_ms": 553.351
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "lazy_ms": 357.28,
+          "create_ms": 250.809,
+          "model_create_to_first_token_ms": 641.615,
+          "cpu_session_ms": 640.277
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "lazy_ms": 68.274,
+          "create_ms": 215.737,
+          "model_create_to_first_token_ms": 536.23,
+          "cpu_session_ms": 534.656
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "lazy_ms": 305.871,
+          "create_ms": 238.592,
+          "model_create_to_first_token_ms": 608.188,
+          "cpu_session_ms": 606.826
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "lazy_ms": 68.142,
+          "create_ms": 217.257,
+          "model_create_to_first_token_ms": 537.363,
+          "cpu_session_ms": 535.906
+        }
+      ]
+    },
+    {
+      "label": "8-tp1-fa3-history",
+      "artifact": "/tmp/resident-first-init8-tp1-fa3-history-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-8B",
+        "gpu_repo": "/root/vllm-gpu",
+        "config_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+        "cpu_tp": 2,
+        "gpu_tp": 1,
+        "cpu_layers": 7,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+          "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+          "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+          "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+          "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "252b451f6ea0b467ec9800df0f38d5138334b957fc3550809820c3c3756db32d",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8ddaa0fce098b9bfa57a63eec96a4185bf295f08",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "fd8fab3e2adc8d572729ef0bd53286afb8c18b24"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "lazy_ms": 435.742,
+          "create_ms": 310.593,
+          "model_create_to_first_token_ms": 778.041,
+          "cpu_session_ms": 776.918
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "lazy_ms": 118.969,
+          "create_ms": 272.168,
+          "model_create_to_first_token_ms": 612.077,
+          "cpu_session_ms": 610.977
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "lazy_ms": 412.62,
+          "create_ms": 231.948,
+          "model_create_to_first_token_ms": 676.293,
+          "cpu_session_ms": 674.62
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "lazy_ms": 83.267,
+          "create_ms": 219.479,
+          "model_create_to_first_token_ms": 537.663,
+          "cpu_session_ms": 536.325
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "lazy_ms": 381.128,
+          "create_ms": 252.448,
+          "model_create_to_first_token_ms": 665.377,
+          "cpu_session_ms": 664.21
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "lazy_ms": 296.592,
+          "create_ms": 294.857,
+          "model_create_to_first_token_ms": 821.601,
+          "cpu_session_ms": 820.482
+        }
+      ]
+    },
+    {
+      "label": "14-tp1-fa3-control",
+      "artifact": "/tmp/resident-first-init14-tp1-fa3-control-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-14B",
+        "gpu_repo": "/tmp/relay-fa3-control-gpu-4f063cc",
+        "config_sha256": "e73c3664ca09b10a673fef0c22e8a6b456201d49bd4713c9691f775720e8857a",
+        "cpu_tp": 2,
+        "gpu_tp": 1,
+        "cpu_layers": 8,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "bd5eed148e2eae35abd5cd4d0589ff0fbcac412708dc8058c0e84082147e7ee0",
+          "vllm-gpu/shm_manager/csrc/model_manager.h": "8643a77ce43a2d1e315cb662baefb31ceccc91ee82310a117e34bad5a1b78a3c",
+          "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "0517b43bc9881c11493bc50ba3a37b93dc6b626a8961bc245021b9de2eee2001",
+          "vllm-gpu/shm_manager/torch.py": "e46a39d06f4b6916c99df86ad03cfd62373b3dc4753b8507d9b8da260fd16c54",
+          "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "0a5979395d83ea2aba0479c5819db686a08d52259fd478b757dc9b223d2f234a",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "53d8197d6bae56258838089f3a4bc59e8da70d07b6065551beace067d9f4cffc"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8ddaa0fce098b9bfa57a63eec96a4185bf295f08",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "lazy_ms": 622.23,
+          "create_ms": 365.854,
+          "model_create_to_first_token_ms": 1030.84,
+          "cpu_session_ms": 1029.487
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "lazy_ms": 115.117,
+          "create_ms": 234.282,
+          "model_create_to_first_token_ms": 692.442,
+          "cpu_session_ms": 900.984
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "lazy_ms": 629.105,
+          "create_ms": 256.196,
+          "model_create_to_first_token_ms": 925.818,
+          "cpu_session_ms": 924.364
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "lazy_ms": 89.778,
+          "create_ms": 241.828,
+          "model_create_to_first_token_ms": 691.797,
+          "cpu_session_ms": 836.559
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "lazy_ms": 615.552,
+          "create_ms": 298.336,
+          "model_create_to_first_token_ms": 953.854,
+          "cpu_session_ms": 952.489
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "lazy_ms": 121.447,
+          "create_ms": 436.193,
+          "model_create_to_first_token_ms": 879.845,
+          "cpu_session_ms": 1019.962
+        }
+      ]
+    },
+    {
+      "label": "14-tp1-fa3-final",
+      "artifact": "/tmp/resident-first-init14-tp1-fa3-final-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-14B",
+        "gpu_repo": "/root/vllm-gpu",
+        "config_sha256": "e73c3664ca09b10a673fef0c22e8a6b456201d49bd4713c9691f775720e8857a",
+        "cpu_tp": 2,
+        "gpu_tp": 1,
+        "cpu_layers": 8,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+          "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+          "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+          "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+          "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+          "vllm-gpu/vllm/v1/worker/gpu_worker.py": "cf4963f07ff8a2d475fa1d022d5f959ceedd8387fdf9cbe55d354fe94e1bdd9f",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8ddaa0fce098b9bfa57a63eec96a4185bf295f08",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "fd8fab3e2adc8d572729ef0bd53286afb8c18b24"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "lazy_ms": 508.047,
+          "create_ms": 318.204,
+          "model_create_to_first_token_ms": 955.68,
+          "cpu_session_ms": 954.846
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "lazy_ms": 190.107,
+          "create_ms": 253.018,
+          "model_create_to_first_token_ms": 919.684,
+          "cpu_session_ms": 918.316
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "lazy_ms": 352.549,
+          "create_ms": 247.203,
+          "model_create_to_first_token_ms": 927.306,
+          "cpu_session_ms": 925.735
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "lazy_ms": 82.762,
+          "create_ms": 219.597,
+          "model_create_to_first_token_ms": 775.781,
+          "cpu_session_ms": 774.361
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "lazy_ms": 280.718,
+          "create_ms": 247.212,
+          "model_create_to_first_token_ms": 876.479,
+          "cpu_session_ms": 875.04
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "lazy_ms": 99.528,
+          "create_ms": 228.075,
+          "model_create_to_first_token_ms": 804.614,
+          "cpu_session_ms": 803.563
+        }
+      ]
+    },
+    {
+      "label": "14-tp1-fa3-history",
+      "artifact": "/tmp/resident-first-init14-tp1-fa3-history-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-14B",
+        "gpu_repo": "/root/vllm-gpu",
+        "config_sha256": "e73c3664ca09b10a673fef0c22e8a6b456201d49bd4713c9691f775720e8857a",
+        "cpu_tp": 2,
+        "gpu_tp": 1,
+        "cpu_layers": 8,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+          "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+          "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+          "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+          "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "252b451f6ea0b467ec9800df0f38d5138334b957fc3550809820c3c3756db32d",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8ddaa0fce098b9bfa57a63eec96a4185bf295f08",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "fd8fab3e2adc8d572729ef0bd53286afb8c18b24"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "lazy_ms": 431.823,
+          "create_ms": 268.42,
+          "model_create_to_first_token_ms": 931.689,
+          "cpu_session_ms": 931.625
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "lazy_ms": 110.091,
+          "create_ms": 287.164,
+          "model_create_to_first_token_ms": 852.373,
+          "cpu_session_ms": 850.35
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "lazy_ms": 317.608,
+          "create_ms": 231.282,
+          "model_create_to_first_token_ms": 856.402,
+          "cpu_session_ms": 855.001
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "lazy_ms": 91.134,
+          "create_ms": 222.996,
+          "model_create_to_first_token_ms": 788.562,
+          "cpu_session_ms": 786.999
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "lazy_ms": 302.537,
+          "create_ms": 266.08,
+          "model_create_to_first_token_ms": 911.285,
+          "cpu_session_ms": 909.246
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "lazy_ms": 89.638,
+          "create_ms": 226.744,
+          "model_create_to_first_token_ms": 786.268,
+          "cpu_session_ms": 784.471
+        }
+      ]
+    }
+  ],
+  "compute_timing_verification": {
+    "artifact": "/tmp/resident-first-init8-tp1-fa3-compute-layer128",
+    "metadata": {
+      "checkpoint": "/workspace/models/Qwen3-8B",
+      "gpu_repo": "/root/vllm-gpu",
+      "config_sha256": "f7c4eadfbbf522470667b797a3c89be2524832d2d599797248dc304fff447c30",
+      "cpu_tp": 2,
+      "gpu_tp": 1,
+      "cpu_layers": 7,
+      "cpu_prefix_tokens": 0,
+      "cpu_inference_concurrent": true,
+      "prompt_tokens": 128,
+      "chunk_tokens": 4096,
+      "max_model_len": 4200,
+      "visible_gpus": "0",
+      "flash_attn_version_override": "3",
+      "weight_transfer_artifact_sha256": {
+        "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+        "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+        "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+        "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+        "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+        "vllm-gpu/vllm/v1/worker/gpu_worker.py": "cf4963f07ff8a2d475fa1d022d5f959ceedd8387fdf9cbe55d354fe94e1bdd9f",
+        "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+      },
+      "architecture_profile_directory": null,
+      "warmup_host_profile_directory": null,
+      "warmup_cuda_trace_directory": null,
+      "warmup_cuda_completion_diagnostic": false,
+      "host_weight_wait_diagnostic": false,
+      "latency_measurement_valid": true,
+      "trials": 2,
+      "revisions": {
+        "sllm": "8ddaa0fce098b9bfa57a63eec96a4185bf295f08",
+        "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+        "vllm-gpu": "fd8fab3e2adc8d572729ef0bd53286afb8c18b24"
+      }
+    },
+    "original_safetensors_exact": true,
+    "samples": [
+      {
+        "trial": 0,
+        "process_first_model": true,
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 7,
+            "rank_seconds": {
+              "1": 0.081427,
+              "0": 0.087525
+            },
+            "model_seconds": 0.087525
+          }
+        ],
+        "cpu_session_seconds": 0.6359164426103234
+      },
+      {
+        "trial": 0,
+        "process_first_model": false,
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 7,
+            "rank_seconds": {
+              "0": 0.070938,
+              "1": 0.070866
+            },
+            "model_seconds": 0.070938
+          }
+        ],
+        "cpu_session_seconds": 0.5537103302776814
+      },
+      {
+        "trial": 1,
+        "process_first_model": true,
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 7,
+            "rank_seconds": {
+              "1": 0.080462,
+              "0": 0.083122
+            },
+            "model_seconds": 0.083122
+          }
+        ],
+        "cpu_session_seconds": 0.6789079001173377
+      },
+      {
+        "trial": 1,
+        "process_first_model": false,
+        "cpu_steps": [
+          {
+            "step": 0,
+            "tokens": 128,
+            "cpu_layers": 7,
+            "rank_seconds": {
+              "1": 0.053887,
+              "0": 0.054824
+            },
+            "model_seconds": 0.054824
+          }
+        ],
+        "cpu_session_seconds": 0.639108469709754
+      }
+    ]
+  }
+}

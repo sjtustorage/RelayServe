@@ -1,0 +1,146 @@
+diff --git a/tests/v1/worker/test_relay_full_warmup.py b/tests/v1/worker/test_relay_full_warmup.py
+index f40db9fd9..6af2cfcec 100644
+--- a/tests/v1/worker/test_relay_full_warmup.py
++++ b/tests/v1/worker/test_relay_full_warmup.py
+@@ -6,6 +6,7 @@ import pytest
+ import torch
+ 
+ from vllm.model_executor.models.qwen2 import Qwen2Model
++from vllm.v1.worker.gpu_model_runner import GPUModelRunner
+ 
+ 
+ @pytest.mark.parametrize('start,end', [(0, 36), (0, 64), (16, 32)])
+@@ -30,3 +31,44 @@ def test_dummy_forward_visits_every_local_layer(start, end, warmup):
+         model.forward(torch.zeros(2, dtype=torch.long), torch.zeros(2),
+                       intermediate_tensors=intermediate, warmup=warmup)
+     assert seen == [(i, warmup) for i in range(start, end)]
++
++
++@pytest.mark.parametrize('active,allocated', [
++    ((8, 80), (0, 80)),     # intra-node layerwise recovery prefix
++    ((12, 24), (8, 32)),    # expanded asymmetric PP ownership
++    ((16, 32), (16, 32)),   # uniform PP after removing migrated KV
++])
++@pytest.mark.parametrize('fails', [False, True])
++def test_warmup_covers_allocated_recovery_and_restores_relay(active, allocated, fails):
++    model = Qwen2Model.__new__(Qwen2Model)
++    torch.nn.Module.__init__(model)
++    model.start_layer, model.end_layer = active
++    model.aux_hidden_state_layers = ()
++    seen = []
++    model.get_input_embeddings = lambda ids: torch.ones(len(ids), 4)
++
++    def layer(positions, hidden, residual, idx, mode):
++        seen.append(idx)
++        return hidden, hidden
++
++    model.layers = [layer] * allocated[1]
++    model.norm = lambda hidden, residual: (hidden, residual)
++    runner = SimpleNamespace(
++        load_config=SimpleNamespace(load_format='shm'),
++        get_model=lambda: SimpleNamespace(model=model),
++        kv_cache_config=SimpleNamespace(kv_cache_groups=[SimpleNamespace(
++            layer_names=[f'model.layers.{i}.self_attn'
++                         for i in range(*allocated)])]))
++    group = SimpleNamespace(is_first_rank=allocated[0] == 0, is_last_rank=True)
++    try:
++        with GPUModelRunner.warmup_layer_range(runner), patch(
++                'vllm.model_executor.models.qwen2.get_pp_group', return_value=group):
++            model.forward(torch.zeros(2, dtype=torch.long), torch.zeros(2),
++                          intermediate_tensors=dict(hidden_states=torch.ones(2, 4),
++                                                    residual=None), warmup=True)
++            if fails:
++                raise RuntimeError('warmup failed')
++    except RuntimeError as exc:
++        assert fails and str(exc) == 'warmup failed'
++    assert seen == list(range(*allocated))
++    assert (model.start_layer, model.end_layer) == active
+diff --git a/vllm/v1/worker/gpu_model_runner.py b/vllm/v1/worker/gpu_model_runner.py
+index 8c72e0e91..1c5b9b729 100644
+--- a/vllm/v1/worker/gpu_model_runner.py
++++ b/vllm/v1/worker/gpu_model_runner.py
+@@ -46,7 +46,8 @@ from vllm.model_executor.models.interfaces import (is_mixture_of_experts,
+ from vllm.model_executor.models.interfaces_base import (
+     VllmModelForPooling, is_pooling_model, is_text_generation_model)
+ from vllm.model_executor.models.utils import (
+-    set_pp_layer_range_override, clear_pp_layer_range_override)
++    set_pp_layer_range_override, clear_pp_layer_range_override,
++    extract_layer_index)
+ from vllm.multimodal import MULTIMODAL_REGISTRY
+ from vllm.multimodal.inputs import (BatchedTensorInputs, MultiModalKwargsItem,
+                                     PlaceholderRange)
+@@ -2660,6 +2661,32 @@ class GPUModelRunner(LoRAModelRunnerMixin, KVConnectorModelRunnerMixin):
+               and self.load_config.shm_kv_cache_size > 0):
+             self._register_gpu_kv_cache_ptrs(kv_dict)
+ 
++    @contextmanager
++    def warmup_layer_range(self):
++        """Warm every retained decoder layer with allocated KV, then restore relay."""
++        if self.load_config.load_format != "shm":
++            yield
++            return
++        model = self.get_model()
++        inner = getattr(model, "model", model)
++        if not hasattr(inner, "start_layer") or not hasattr(inner, "end_layer"):
++            yield
++            return
++        layers = {
++            extract_layer_index(name)
++            for group in self.kv_cache_config.kv_cache_groups
++            for name in group.layer_names
++        }
++        if not layers:
++            yield
++            return
++        active_range = inner.start_layer, inner.end_layer
++        inner.start_layer, inner.end_layer = min(layers), max(layers) + 1
++        try:
++            yield
++        finally:
++            inner.start_layer, inner.end_layer = active_range
++
+     def _update_model_layer_range(self, start: int=-1, end: int=-1) -> None:
+         """Update the inner model's start_layer/end_layer so forward() only
+         runs the uniform partition (layers outside it had KV removed)."""
+diff --git a/vllm/v1/worker/gpu_worker.py b/vllm/v1/worker/gpu_worker.py
+index 52c2b1f32..76ffdcb0d 100644
+--- a/vllm/v1/worker/gpu_worker.py
++++ b/vllm/v1/worker/gpu_worker.py
+@@ -559,20 +559,23 @@ class Worker(WorkerBase):
+         # Exercise prefill and the uniform decode path
+         # for each newly constructed model, including models in retained ranks.
+         # Dummy forwards skip weight fences so SHM DMA can keep progressing.
+-        self.model_runner._dummy_run(
+-            # More tokens than requests ensures at least one multi-token
+-            # query, exercising prefill rather than only single-token decode.
+-            num_tokens=min(max_num_reqs + 1,
+-                           self.scheduler_config.max_num_batched_tokens),
+-            force_attention=True,
+-            skip_eplb=True,
+-        )
+-        hidden_states, last_hidden_states = self.model_runner._dummy_run(
+-            num_tokens=max_num_reqs,
+-            force_attention=True,
+-            uniform_decode=True,
+-            skip_eplb=True,
+-        )
++        # Layerwise execution initially uses a suffix. Warm every retained
++        # recovery layer with allocated KV, without changing the execution
++        # range used for the compile sizes and CUDA graphs captured above.
++        with self.model_runner.warmup_layer_range():
++            self.model_runner._dummy_run(
++                # More tokens than requests exercises multi-token prefill.
++                num_tokens=min(max_num_reqs + 1,
++                               self.scheduler_config.max_num_batched_tokens),
++                force_attention=True,
++                skip_eplb=True,
++            )
++            hidden_states, last_hidden_states = self.model_runner._dummy_run(
++                num_tokens=max_num_reqs,
++                force_attention=True,
++                uniform_decode=True,
++                skip_eplb=True,
++            )
+         logger.info("[lazy_init] dummy_model_warmup: %.3fs",
+                     time.perf_counter() - warmup_phase_start)
+ 

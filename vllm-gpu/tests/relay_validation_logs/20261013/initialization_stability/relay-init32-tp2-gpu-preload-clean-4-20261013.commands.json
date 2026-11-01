@@ -1,0 +1,60 @@
+{
+  "checkpoint": "/workspace/models/Qwen3-32B",
+  "cpu_command": [
+    "timeout",
+    "900",
+    "/workspace/vllm-cpu/.venv/bin/python",
+    "/workspace/vllm-gpu/tests/verify_qwen_layerwise_v1.py",
+    "--role",
+    "cpu",
+    "--checkpoint",
+    "/workspace/models/Qwen3-32B",
+    "--tp",
+    "2",
+    "--folder",
+    "/tmp/relay-init32-tp2-gpu-preload-clean-4-20261013",
+    "--cpu-layers",
+    "8",
+    "--prompt-tokens",
+    "128",
+    "--output-tokens",
+    "8"
+  ],
+  "gpu_command": [
+    "timeout",
+    "600",
+    "/workspace/vllm-gpu/.venv/bin/python",
+    "/workspace/vllm-gpu/tests/verify_qwen_layerwise_v1.py",
+    "--role",
+    "gpu",
+    "--tp",
+    "2",
+    "--folder",
+    "/tmp/relay-init32-tp2-gpu-preload-clean-4-20261013",
+    "--cpu-layers",
+    "8",
+    "--prompt-tokens",
+    "128",
+    "--output-tokens",
+    "8"
+  ],
+  "cpu_environment": {
+    "VLLM_CPU_OMP_THREADS_BIND": "0-47|48-95",
+    "VLLM_CPU_KVCACHE_SPACE": "1",
+    "OMP_NUM_THREADS": "48",
+    "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4:/workspace/vllm-cpu/.venv/lib/libiomp5.so:/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4:/workspace/vllm-cpu/.venv/lib/libiomp5.so:"
+  },
+  "gpu_environment": {
+    "VLLM_PROFILE_RELAY": "1",
+    "VLLM_ATTENTION_BACKEND": "FLASH_ATTN",
+    "VLLM_FLASH_ATTN_VERSION": "3",
+    "CUDA_VISIBLE_DEVICES": "0,4",
+    "LD_PRELOAD": "/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4:/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4"
+  },
+  "cpu_revision": "6a293c679b95ced4134056d22298b375be463330",
+  "cpu_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "gpu_revision": "b69a23db8c85cc92fcd2331e9961b7c6e8884b57",
+  "gpu_diff_sha256": "c97b99d6064d35ac05003741d415015373f4fbcb73018d30f53439ebdfa2d426",
+  "gpu_exit_code": 0,
+  "cpu_exit_code": 0
+}

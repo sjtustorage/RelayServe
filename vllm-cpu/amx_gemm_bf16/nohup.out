@@ -1,0 +1,18 @@
+Traceback (most recent call last):
+  File "/workspace/vllm-cpu/amx_gemm_bf16/./tune.py", line 603, in <module>
+    main()
+  File "/workspace/vllm-cpu/amx_gemm_bf16/./tune.py", line 528, in main
+    shapes = parse_shapes(args.shapes)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/vllm-cpu/amx_gemm_bf16/./tune.py", line 494, in parse_shapes
+    raise ValueError(f"格式错误: '{item}', 期望 KxN 如 4096x12288")
+ValueError: 格式错误: '8192×29568', 期望 KxN 如 4096x12288
+Traceback (most recent call last):
+  File "/workspace/vllm-cpu/amx_gemm_bf16/./tune.py", line 603, in <module>
+    main()
+  File "/workspace/vllm-cpu/amx_gemm_bf16/./tune.py", line 528, in main
+    shapes = parse_shapes(args.shapes)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/workspace/vllm-cpu/amx_gemm_bf16/./tune.py", line 494, in parse_shapes
+    raise ValueError(f"格式错误: '{item}', 期望 KxN 如 4096x12288")
+ValueError: 格式错误: '8192×29568', 期望 KxN 如 4096x12288

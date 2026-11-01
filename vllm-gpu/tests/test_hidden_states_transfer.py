@@ -1,0 +1,21 @@
+import torch
+from shm_manager._C import HiddenStatesManager
+source=torch.arange(2*256*64,dtype=torch.float32).reshape(2,256,64).bfloat16().pin_memory()
+manager=HiddenStatesManager(64,2)
+manager.update_shm_ptr_info(source.data_ptr(),256*64*2)
+for count in (65,1,256):
+    hidden=torch.empty((count,64),device='cuda',dtype=torch.bfloat16)
+    residual=torch.empty_like(hidden)
+    manager.update_gpu_ptr_info(hidden.data_ptr(),residual.data_ptr())
+    manager.load_hidden_states(count)
+    torch.testing.assert_close(hidden.cpu(),source[0,:count],rtol=0,atol=0)
+    torch.testing.assert_close(residual.cpu(),source[1,:count],rtol=0,atol=0)
+print('PASS residual fixed capacity offset for 65, 1, 256 tokens')
+hidden=torch.empty((66,64),device='cuda',dtype=torch.bfloat16)
+residual=torch.empty_like(hidden)
+manager.update_gpu_ptr_info(hidden.data_ptr(),residual.data_ptr())
+manager.load_hidden_state_spans([(1,0,65),(0,65,1)])
+order=torch.cat((torch.arange(1,66),torch.tensor([0])))
+torch.testing.assert_close(hidden.cpu(),source[0,order],rtol=0,atol=0)
+torch.testing.assert_close(residual.cpu(),source[1,order],rtol=0,atol=0)
+print('PASS direct hidden/residual transfer with reversed request rows')

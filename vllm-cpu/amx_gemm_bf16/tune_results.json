@@ -1,0 +1,33 @@
+{
+  "config": {
+    "shapes": [
+      "4096x12288"
+    ],
+    "cores": "98-143",
+    "num_threads": 46,
+    "skip_prefetch": false
+  },
+  "results": [
+    {
+      "M": 4096,
+      "K": 4096,
+      "N": 12288,
+      "best_TM": 512,
+      "best_TN": 224,
+      "best_TK": 1280,
+      "best_pf_time_ms": 12.538699433207512,
+      "best_no_pf_time_ms": 12.607336044311523,
+      "best_gflops": 32883.542875588784,
+      "total_configs": 2164,
+      "search_time_s": 99.12836813926697,
+      "prefetch_a": true,
+      "prefetch_b": true,
+      "prefetch_c": true,
+      "pf_a_dist": 1,
+      "pf_b_dist": 4,
+      "pf_c_dist": 1,
+      "hw_prefetch": true,
+      "prefetch_configs_searched": 124
+    }
+  ]
+}

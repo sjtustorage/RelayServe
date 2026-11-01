@@ -1,0 +1,831 @@
+{
+  "retained_policy": "Bound architecture submissions only for asynchronous layerwise SHM loading; keep full warmup for every instance.",
+  "runs": [
+    {
+      "label": "tp2-layer128-control",
+      "artifact": "/tmp/resident-first-init32-tp2-fa3-control-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 2,
+        "cpu_layers": 13,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,4",
+        "flash_attn_version_override": "3",
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "c14c665123afd4fd5dd91951d11032071661a5c2",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "7cc26848fabe4f4a612f5498c301adb472f8a456"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 235.044,
+          "lazy_ms": 714.471,
+          "cpu_ms": 995.976,
+          "model_create_to_first_token_ms": 997.626,
+          "warm_first_token_ms": 41.995
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 133.815,
+          "lazy_ms": 190.243,
+          "cpu_ms": 787.216,
+          "model_create_to_first_token_ms": 788.777,
+          "warm_first_token_ms": 42.001
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 159.109,
+          "lazy_ms": 721.584,
+          "cpu_ms": 927.531,
+          "model_create_to_first_token_ms": 929.264,
+          "warm_first_token_ms": 41.792
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 139.389,
+          "lazy_ms": 183.886,
+          "cpu_ms": 787.781,
+          "model_create_to_first_token_ms": 789.089,
+          "warm_first_token_ms": 41.57
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "create_ms": 160.869,
+          "lazy_ms": 705.346,
+          "cpu_ms": 912.331,
+          "model_create_to_first_token_ms": 914.127,
+          "warm_first_token_ms": 41.521
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "create_ms": 125.252,
+          "lazy_ms": 191.459,
+          "cpu_ms": 811.647,
+          "model_create_to_first_token_ms": 649.458,
+          "warm_first_token_ms": 41.337
+        }
+      ]
+    },
+    {
+      "label": "tp2-layer128-bounded",
+      "artifact": "/tmp/resident-first-init32-tp2-fa3-bounded-submit",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 2,
+        "cpu_layers": 13,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,4",
+        "flash_attn_version_override": "3",
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "c14c665123afd4fd5dd91951d11032071661a5c2",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "7cc26848fabe4f4a612f5498c301adb472f8a456"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 158.587,
+          "lazy_ms": 274.934,
+          "cpu_ms": 852.959,
+          "model_create_to_first_token_ms": 854.939,
+          "warm_first_token_ms": 42.235
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 141.18,
+          "lazy_ms": 166.984,
+          "cpu_ms": 792.459,
+          "model_create_to_first_token_ms": 793.68,
+          "warm_first_token_ms": 41.3
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 182.147,
+          "lazy_ms": 246.186,
+          "cpu_ms": 843.371,
+          "model_create_to_first_token_ms": 845.392,
+          "warm_first_token_ms": 41.409
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 136.128,
+          "lazy_ms": 178.748,
+          "cpu_ms": 784.703,
+          "model_create_to_first_token_ms": 786.474,
+          "warm_first_token_ms": 41.264
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "create_ms": 180.854,
+          "lazy_ms": 233.908,
+          "cpu_ms": 850.134,
+          "model_create_to_first_token_ms": 851.552,
+          "warm_first_token_ms": 42.171
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "create_ms": 134.849,
+          "lazy_ms": 164.145,
+          "cpu_ms": 772.193,
+          "model_create_to_first_token_ms": 773.305,
+          "warm_first_token_ms": 41.738
+        }
+      ]
+    },
+    {
+      "label": "tp2-layer4096-control",
+      "artifact": "/tmp/resident-first-init32-tp2-fa3-control-layer4096",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 2,
+        "cpu_layers": 13,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 4096,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,4",
+        "flash_attn_version_override": "3",
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 2,
+        "revisions": {
+          "sllm": "c14c665123afd4fd5dd91951d11032071661a5c2",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 208.129,
+          "lazy_ms": 864.013,
+          "cpu_ms": 3415.846,
+          "model_create_to_first_token_ms": 3417.582,
+          "warm_first_token_ms": 1086.784
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 154.672,
+          "lazy_ms": 272.872,
+          "cpu_ms": 3124.11,
+          "model_create_to_first_token_ms": 3127.25,
+          "warm_first_token_ms": 1079.632
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 193.48,
+          "lazy_ms": 828.724,
+          "cpu_ms": 3312.555,
+          "model_create_to_first_token_ms": 3314.991,
+          "warm_first_token_ms": 1080.902
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 158.05,
+          "lazy_ms": 237.141,
+          "cpu_ms": 3252.116,
+          "model_create_to_first_token_ms": 3254.778,
+          "warm_first_token_ms": 1079.863
+        }
+      ]
+    },
+    {
+      "label": "tp2-layer4096-bounded",
+      "artifact": "/tmp/resident-first-init32-tp2-fa3-bounded-layer4096",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 2,
+        "cpu_layers": 13,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 4096,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,4",
+        "flash_attn_version_override": "3",
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 2,
+        "revisions": {
+          "sllm": "c14c665123afd4fd5dd91951d11032071661a5c2",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 160.238,
+          "lazy_ms": 330.315,
+          "cpu_ms": 3490.57,
+          "model_create_to_first_token_ms": 3492.654,
+          "warm_first_token_ms": 1085.638
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 151.427,
+          "lazy_ms": 241.219,
+          "cpu_ms": 3197.165,
+          "model_create_to_first_token_ms": 3199.343,
+          "warm_first_token_ms": 1079.527
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 190.265,
+          "lazy_ms": 406.028,
+          "cpu_ms": 3113.116,
+          "model_create_to_first_token_ms": 3115.244,
+          "warm_first_token_ms": 1080.203
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 142.699,
+          "lazy_ms": 242.122,
+          "cpu_ms": 3145.36,
+          "model_create_to_first_token_ms": 3149.76,
+          "warm_first_token_ms": 1080.015
+        }
+      ]
+    },
+    {
+      "label": "tp4-layer128-control",
+      "artifact": "/tmp/resident-first-init32-tp4-fa3-control-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 4,
+        "cpu_layers": 13,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,1,4,5",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "bd5eed148e2eae35abd5cd4d0589ff0fbcac412708dc8058c0e84082147e7ee0",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "53d8197d6bae56258838089f3a4bc59e8da70d07b6065551beace067d9f4cffc"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8234586d2fd0c66c716cb1631dfdc6abff9ffbb4",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 241.777,
+          "lazy_ms": 515.462,
+          "cpu_ms": 798.214,
+          "model_create_to_first_token_ms": 798.975,
+          "warm_first_token_ms": 29.48
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 166.172,
+          "lazy_ms": 204.636,
+          "cpu_ms": 525.427,
+          "model_create_to_first_token_ms": 436.761,
+          "warm_first_token_ms": 27.36
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 220.415,
+          "lazy_ms": 586.452,
+          "cpu_ms": 847.553,
+          "model_create_to_first_token_ms": 848.723,
+          "warm_first_token_ms": 27.664
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 214.374,
+          "lazy_ms": 174.528,
+          "cpu_ms": 545.185,
+          "model_create_to_first_token_ms": 546.438,
+          "warm_first_token_ms": 26.973
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "create_ms": 192.285,
+          "lazy_ms": 425.346,
+          "cpu_ms": 658.048,
+          "model_create_to_first_token_ms": 659.341,
+          "warm_first_token_ms": 28.354
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "create_ms": 278.919,
+          "lazy_ms": 167.957,
+          "cpu_ms": 603.844,
+          "model_create_to_first_token_ms": 605.271,
+          "warm_first_token_ms": 27.604
+        }
+      ]
+    },
+    {
+      "label": "tp4-layer128-bounded",
+      "artifact": "/tmp/resident-first-init32-tp4-fa3-bounded-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 4,
+        "cpu_layers": 13,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,1,4,5",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "81d26d517d8afd83d729050575bb0df18085a54373dbbc7f85eabf5203abdef0",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "182ac844d68e5dff91e6851d63c9db59f6fe5d2e5424611b019a138e5bc461a6"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "c14c665123afd4fd5dd91951d11032071661a5c2",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 383.26,
+          "lazy_ms": 319.357,
+          "cpu_ms": 816.861,
+          "model_create_to_first_token_ms": 818.155,
+          "warm_first_token_ms": 27.807
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 261.036,
+          "lazy_ms": 180.616,
+          "cpu_ms": 609.117,
+          "model_create_to_first_token_ms": 610.754,
+          "warm_first_token_ms": 27.246
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 211.219,
+          "lazy_ms": 259.003,
+          "cpu_ms": 587.343,
+          "model_create_to_first_token_ms": 588.559,
+          "warm_first_token_ms": 27.976
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 171.338,
+          "lazy_ms": 192.778,
+          "cpu_ms": 504.514,
+          "model_create_to_first_token_ms": 506.177,
+          "warm_first_token_ms": 27.299
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "create_ms": 189.036,
+          "lazy_ms": 299.57,
+          "cpu_ms": 591.263,
+          "model_create_to_first_token_ms": 591.713,
+          "warm_first_token_ms": 31.243
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "create_ms": 189.545,
+          "lazy_ms": 163.434,
+          "cpu_ms": 528.254,
+          "model_create_to_first_token_ms": 528.911,
+          "warm_first_token_ms": 27.284
+        }
+      ]
+    },
+    {
+      "label": "tp2-token4096-control-repeat",
+      "artifact": "/tmp/resident-first-init32-tp2-fa3-control-token4096-repeat",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 2,
+        "cpu_layers": 0,
+        "cpu_prefix_tokens": 128,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 4096,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,4",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "bd5eed148e2eae35abd5cd4d0589ff0fbcac412708dc8058c0e84082147e7ee0",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "53d8197d6bae56258838089f3a4bc59e8da70d07b6065551beace067d9f4cffc"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8234586d2fd0c66c716cb1631dfdc6abff9ffbb4",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 180.512,
+          "lazy_ms": 757.466,
+          "cpu_ms": 1059.374,
+          "model_create_to_first_token_ms": 2103.537,
+          "warm_first_token_ms": 1082.931
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 128.435,
+          "lazy_ms": 202.981,
+          "cpu_ms": 1180.027,
+          "model_create_to_first_token_ms": 2212.548,
+          "warm_first_token_ms": 1080.409
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 168.481,
+          "lazy_ms": 775.338,
+          "cpu_ms": 1108.232,
+          "model_create_to_first_token_ms": 2155.432,
+          "warm_first_token_ms": 1083.63
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 139.54,
+          "lazy_ms": 211.805,
+          "cpu_ms": 1096.987,
+          "model_create_to_first_token_ms": 2129.101,
+          "warm_first_token_ms": 1080.5
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "create_ms": 192.884,
+          "lazy_ms": 803.875,
+          "cpu_ms": 979.481,
+          "model_create_to_first_token_ms": 2041.233,
+          "warm_first_token_ms": 1081.847
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "create_ms": 181.044,
+          "lazy_ms": 195.017,
+          "cpu_ms": 1154.675,
+          "model_create_to_first_token_ms": 2187.054,
+          "warm_first_token_ms": 1080.048
+        }
+      ]
+    },
+    {
+      "label": "tp2-token4096-bounded-repeat-rejected",
+      "artifact": "/tmp/resident-first-init32-tp2-fa3-bounded-token4096-repeat",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 2,
+        "cpu_layers": 0,
+        "cpu_prefix_tokens": 128,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 4096,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,4",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "81d26d517d8afd83d729050575bb0df18085a54373dbbc7f85eabf5203abdef0",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "182ac844d68e5dff91e6851d63c9db59f6fe5d2e5424611b019a138e5bc461a6"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 3,
+        "revisions": {
+          "sllm": "8234586d2fd0c66c716cb1631dfdc6abff9ffbb4",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 165.252,
+          "lazy_ms": 339.742,
+          "cpu_ms": 1241.108,
+          "model_create_to_first_token_ms": 2354.461,
+          "warm_first_token_ms": 1219.062
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 157.463,
+          "lazy_ms": 189.294,
+          "cpu_ms": 1193.68,
+          "model_create_to_first_token_ms": 2234.413,
+          "warm_first_token_ms": 1079.724
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 158.011,
+          "lazy_ms": 342.727,
+          "cpu_ms": 998.632,
+          "model_create_to_first_token_ms": 2036.74,
+          "warm_first_token_ms": 1081.962
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 169.377,
+          "lazy_ms": 223.636,
+          "cpu_ms": 895.131,
+          "model_create_to_first_token_ms": 1939.572,
+          "warm_first_token_ms": 1079.596
+        },
+        {
+          "trial": 2,
+          "process_first_model": true,
+          "create_ms": 212.196,
+          "lazy_ms": 324.537,
+          "cpu_ms": 1031.318,
+          "model_create_to_first_token_ms": 2102.162,
+          "warm_first_token_ms": 1086.289
+        },
+        {
+          "trial": 2,
+          "process_first_model": false,
+          "create_ms": 146.304,
+          "lazy_ms": 190.278,
+          "cpu_ms": 1373.338,
+          "model_create_to_first_token_ms": 2406.136,
+          "warm_first_token_ms": 1079.78
+        }
+      ]
+    },
+    {
+      "label": "tp4-layer128-final-policy",
+      "artifact": "/tmp/resident-first-init32-tp4-fa3-final-layer128",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 4,
+        "cpu_layers": 13,
+        "cpu_prefix_tokens": 0,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 128,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,1,4,5",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 2,
+        "revisions": {
+          "sllm": "8234586d2fd0c66c716cb1631dfdc6abff9ffbb4",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 179.991,
+          "lazy_ms": 269.473,
+          "cpu_ms": 557.634,
+          "model_create_to_first_token_ms": 558.965,
+          "warm_first_token_ms": 27.026
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 171.871,
+          "lazy_ms": 183.137,
+          "cpu_ms": 508.491,
+          "model_create_to_first_token_ms": 509.664,
+          "warm_first_token_ms": 28.264
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 234.009,
+          "lazy_ms": 296.313,
+          "cpu_ms": 641.694,
+          "model_create_to_first_token_ms": 644.091,
+          "warm_first_token_ms": 27.383
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 183.828,
+          "lazy_ms": 168.795,
+          "cpu_ms": 512.269,
+          "model_create_to_first_token_ms": 513.761,
+          "warm_first_token_ms": 26.456
+        }
+      ]
+    },
+    {
+      "label": "tp2-token4096-final-policy",
+      "artifact": "/tmp/resident-first-init32-tp2-fa3-final-token4096",
+      "metadata": {
+        "checkpoint": "/workspace/models/Qwen3-32B",
+        "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+        "cpu_tp": 2,
+        "gpu_tp": 2,
+        "cpu_layers": 0,
+        "cpu_prefix_tokens": 128,
+        "cpu_inference_concurrent": true,
+        "prompt_tokens": 4096,
+        "chunk_tokens": 4096,
+        "max_model_len": 4200,
+        "visible_gpus": "0,4",
+        "flash_attn_version_override": "3",
+        "weight_transfer_artifact_sha256": {
+          "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+          "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+          "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+          "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+          "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+          "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+        },
+        "architecture_profile_directory": null,
+        "warmup_host_profile_directory": null,
+        "warmup_cuda_trace_directory": null,
+        "warmup_cuda_completion_diagnostic": false,
+        "host_weight_wait_diagnostic": false,
+        "latency_measurement_valid": true,
+        "trials": 2,
+        "revisions": {
+          "sllm": "8ddaa0fce098b9bfa57a63eec96a4185bf295f08",
+          "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+          "vllm-gpu": "4f063cce95f28524ce52625bc0daa100120fe4de"
+        }
+      },
+      "original_safetensors_exact": true,
+      "samples": [
+        {
+          "trial": 0,
+          "process_first_model": true,
+          "create_ms": 179.091,
+          "lazy_ms": 404.189,
+          "cpu_ms": 951.333,
+          "model_create_to_first_token_ms": 1989.714,
+          "warm_first_token_ms": 1083.586
+        },
+        {
+          "trial": 0,
+          "process_first_model": false,
+          "create_ms": 485.536,
+          "lazy_ms": 203.286,
+          "cpu_ms": 1046.204,
+          "model_create_to_first_token_ms": 2130.681,
+          "warm_first_token_ms": 1079.805
+        },
+        {
+          "trial": 1,
+          "process_first_model": true,
+          "create_ms": 174.101,
+          "lazy_ms": 429.199,
+          "cpu_ms": 955.341,
+          "model_create_to_first_token_ms": 2049.348,
+          "warm_first_token_ms": 1082.271
+        },
+        {
+          "trial": 1,
+          "process_first_model": false,
+          "create_ms": 152.74,
+          "lazy_ms": 193.691,
+          "cpu_ms": 997.362,
+          "model_create_to_first_token_ms": 2030.632,
+          "warm_first_token_ms": 1080.5
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,245 @@
+diff --git a/tests/v1/worker/test_relay_full_warmup.py b/tests/v1/worker/test_relay_full_warmup.py
+index f40db9fd9..334eeac56 100644
+--- a/tests/v1/worker/test_relay_full_warmup.py
++++ b/tests/v1/worker/test_relay_full_warmup.py
+@@ -1,4 +1,4 @@
+-"""Warmup must visit the entire local decoder stage after model recreation."""
++"""Representative eager warmup preserves the real relay execution range."""
+ from types import SimpleNamespace
+ from unittest.mock import patch
+ 
+@@ -6,6 +6,10 @@ import pytest
+ import torch
+ 
+ from vllm.model_executor.models.qwen2 import Qwen2Model
++from vllm.model_executor.models.qwen3 import Qwen3Model
++from vllm.v1.worker.gpu_model_runner import GPUModelRunner
++from vllm.v1.worker.gpu_worker import Worker
++from vllm.v1.worker import gpu_worker
+ 
+ 
+ @pytest.mark.parametrize('start,end', [(0, 36), (0, 64), (16, 32)])
+@@ -30,3 +34,119 @@ def test_dummy_forward_visits_every_local_layer(start, end, warmup):
+         model.forward(torch.zeros(2, dtype=torch.long), torch.zeros(2),
+                       intermediate_tensors=intermediate, warmup=warmup)
+     assert seen == [(i, warmup) for i in range(start, end)]
++
++
++@pytest.mark.parametrize('model_type', [Qwen2Model, Qwen3Model])
++@pytest.mark.parametrize('active,allocated', [
++    ((8, 80), (0, 80)),     # intra-node layerwise recovery prefix
++    ((12, 24), (8, 32)),    # expanded asymmetric PP ownership
++    ((16, 32), (16, 32)),   # uniform PP after removing migrated KV
++])
++@pytest.mark.parametrize('fails', [False, True])
++def test_warmup_uses_allocated_representative_and_restores_relay(
++        model_type, active, allocated, fails):
++    model = model_type.__new__(model_type)
++    torch.nn.Module.__init__(model)
++    model.start_layer, model.end_layer = active
++    model.aux_hidden_state_layers = ()
++    seen = []
++    model.get_input_embeddings = lambda ids: torch.ones(len(ids), 4)
++
++    def layer(positions, hidden, residual, idx, mode):
++        seen.append(idx)
++        return hidden, hidden
++
++    model.layers = [layer] * allocated[1]
++    model.norm = lambda hidden, residual: (hidden, residual)
++    runner = SimpleNamespace(
++        load_config=SimpleNamespace(load_format='shm'),
++        model_config=SimpleNamespace(enforce_eager=True, hf_config=SimpleNamespace()),
++        speculative_config=None,
++        get_model=lambda: SimpleNamespace(model=model),
++        kv_cache_config=SimpleNamespace(kv_cache_groups=[SimpleNamespace(
++            layer_names=[f'model.layers.{i}.self_attn'
++                         for i in range(*allocated)])]))
++    group = SimpleNamespace(is_first_rank=allocated[0] == 0, is_last_rank=True)
++    try:
++        with GPUModelRunner.warmup_layer_range(runner), patch(
++                'vllm.model_executor.models.qwen2.get_pp_group', return_value=group):
++            model.forward(torch.zeros(2, dtype=torch.long), torch.zeros(2),
++                          intermediate_tensors=dict(hidden_states=torch.ones(2, 4),
++                                                    residual=None), warmup=True)
++            if fails:
++                raise RuntimeError('warmup failed')
++    except RuntimeError as exc:
++        assert fails and str(exc) == 'warmup failed'
++    assert seen == [allocated[0]]
++    assert (model.start_layer, model.end_layer) == active
++
++
++def test_complete_warmup_preserves_compilation_and_graph_execution_range(monkeypatch):
++    inner = Qwen2Model.__new__(Qwen2Model)
++    torch.nn.Module.__init__(inner)
++    inner.start_layer, inner.end_layer = 8, 80
++    events = []
++
++    def record(kind):
++        events.append((kind, inner.start_layer, inner.end_layer))
++
++    def dummy(num_tokens, **kwargs):
++        record('decode' if kwargs.get('uniform_decode') else
++               'prefill' if kwargs.get('force_attention') else 'compile')
++        return 'hidden', 'last_hidden'
++
++    runner = SimpleNamespace(
++        load_config=SimpleNamespace(load_format='shm'),
++        model_config=SimpleNamespace(enforce_eager=True, hf_config=SimpleNamespace()),
++        speculative_config=None,
++        get_model=lambda: SimpleNamespace(model=inner),
++        kv_cache_config=SimpleNamespace(kv_cache_groups=[SimpleNamespace(
++            layer_names=[f'model.layers.{i}.self_attn' for i in range(80)])]),
++        _dummy_run=dummy, capture_model=lambda: record('capture'),
++        is_pooling_model=False,
++        _dummy_sampler_run=lambda **kwargs: record('sampler'))
++    runner.model_config.enforce_eager = False
++    runner.warmup_layer_range = lambda: GPUModelRunner.warmup_layer_range(runner)
++    worker = SimpleNamespace(
++        model_runner=runner, device='cuda:0',
++        model_config=SimpleNamespace(enforce_eager=False, seed=0),
++        scheduler_config=SimpleNamespace(max_num_seqs=2, max_num_batched_tokens=4096),
++        vllm_config=SimpleNamespace(compilation_config=SimpleNamespace(
++            compile_sizes=[8], cudagraph_capture_sizes=[])))
++    monkeypatch.setattr(gpu_worker, 'kernel_warmup', lambda _: record('kernel'))
++    monkeypatch.setattr(gpu_worker, 'get_pp_group',
++                        lambda: SimpleNamespace(is_last_rank=True))
++    monkeypatch.setattr(gpu_worker, 'set_random_seed', lambda _: None)
++    monkeypatch.setattr(gpu_worker.torch.cuda, 'current_stream',
++                        lambda _: SimpleNamespace(synchronize=lambda: record('complete')))
++    Worker._compile_or_warm_up_model(worker)
++    assert events == [('compile', 8, 80), ('kernel', 8, 80), ('capture', 8, 80),
++                      ('prefill', 8, 80), ('decode', 8, 80), ('sampler', 8, 80),
++                      ('complete', 8, 80)]
++
++
++@pytest.mark.parametrize("unsupported", ["non_shm", "quantized", "sliding",
++                                         "dual_chunk", "speculative"])
++def test_representative_warmup_keeps_other_execution_paths(unsupported):
++    inner = Qwen2Model.__new__(Qwen2Model)
++    torch.nn.Module.__init__(inner)
++    inner.start_layer, inner.end_layer = 8, 80
++    config = SimpleNamespace(enforce_eager=True, hf_config=SimpleNamespace())
++    runner = SimpleNamespace(
++        load_config=SimpleNamespace(load_format='shm'), model_config=config,
++        speculative_config=None, get_model=lambda: SimpleNamespace(model=inner),
++        kv_cache_config=SimpleNamespace(kv_cache_groups=[SimpleNamespace(
++            layer_names=['model.layers.0.self_attn'])]))
++    if unsupported == 'non_shm':
++        runner.load_config.load_format = 'auto'
++    elif unsupported == 'quantized':
++        inner.quant_config = object()
++    elif unsupported == 'sliding':
++        config.hf_config.use_sliding_window = True
++    elif unsupported == 'dual_chunk':
++        config.hf_config.dual_chunk_attention_config = {'chunk_size': 1024}
++    else:
++        runner.speculative_config = object()
++    with GPUModelRunner.warmup_layer_range(runner):
++        assert (inner.start_layer, inner.end_layer) == (8, 80)
++    assert (inner.start_layer, inner.end_layer) == (8, 80)
+diff --git a/vllm/v1/worker/gpu_model_runner.py b/vllm/v1/worker/gpu_model_runner.py
+index 8c72e0e91..1ce01f01d 100644
+--- a/vllm/v1/worker/gpu_model_runner.py
++++ b/vllm/v1/worker/gpu_model_runner.py
+@@ -46,7 +46,8 @@ from vllm.model_executor.models.interfaces import (is_mixture_of_experts,
+ from vllm.model_executor.models.interfaces_base import (
+     VllmModelForPooling, is_pooling_model, is_text_generation_model)
+ from vllm.model_executor.models.utils import (
+-    set_pp_layer_range_override, clear_pp_layer_range_override)
++    set_pp_layer_range_override, clear_pp_layer_range_override,
++    extract_layer_index)
+ from vllm.multimodal import MULTIMODAL_REGISTRY
+ from vllm.multimodal.inputs import (BatchedTensorInputs, MultiModalKwargsItem,
+                                     PlaceholderRange)
+@@ -2660,6 +2661,46 @@ class GPUModelRunner(LoRAModelRunnerMixin, KVConnectorModelRunnerMixin):
+               and self.load_config.shm_kv_cache_size > 0):
+             self._register_gpu_kv_cache_ptrs(kv_dict)
+ 
++    @contextmanager
++    def warmup_layer_range(self):
++        """Warm a representative homogeneous Qwen layer, then restore relay."""
++        if self.load_config.load_format != "shm":
++            yield
++            return
++        model = self.get_model()
++        inner = getattr(model, "model", model)
++        if not hasattr(inner, "start_layer") or not hasattr(inner, "end_layer"):
++            yield
++            return
++        # Eager dense Qwen layers share kernels across weight addresses. A
++        # single layer includes both plain and fused-residual RMSNorm paths.
++        # Keep graph/compiled execution and heterogeneous models unchanged.
++        from vllm.model_executor.models.qwen2 import Qwen2Model
++        from vllm.model_executor.models.qwen3 import Qwen3Model
++        if (not self.model_config.enforce_eager
++                or type(inner) not in (Qwen2Model, Qwen3Model)
++                or getattr(inner, "quant_config", None) is not None
++                or getattr(self.model_config.hf_config, "use_sliding_window", False)
++                or getattr(self.model_config.hf_config,
++                           "dual_chunk_attention_config", None)
++                or self.speculative_config is not None):
++            yield
++            return
++        layers = {
++            extract_layer_index(name)
++            for group in self.kv_cache_config.kv_cache_groups
++            for name in group.layer_names
++        }
++        if not layers:
++            yield
++            return
++        active_range = inner.start_layer, inner.end_layer
++        inner.start_layer, inner.end_layer = min(layers), min(layers) + 1
++        try:
++            yield
++        finally:
++            inner.start_layer, inner.end_layer = active_range
++
+     def _update_model_layer_range(self, start: int=-1, end: int=-1) -> None:
+         """Update the inner model's start_layer/end_layer so forward() only
+         runs the uniform partition (layers outside it had KV removed)."""
+diff --git a/vllm/v1/worker/gpu_worker.py b/vllm/v1/worker/gpu_worker.py
+index 52c2b1f32..f8cffe08a 100644
+--- a/vllm/v1/worker/gpu_worker.py
++++ b/vllm/v1/worker/gpu_worker.py
+@@ -559,20 +559,24 @@ class Worker(WorkerBase):
+         # Exercise prefill and the uniform decode path
+         # for each newly constructed model, including models in retained ranks.
+         # Dummy forwards skip weight fences so SHM DMA can keep progressing.
+-        self.model_runner._dummy_run(
+-            # More tokens than requests ensures at least one multi-token
+-            # query, exercising prefill rather than only single-token decode.
+-            num_tokens=min(max_num_reqs + 1,
+-                           self.scheduler_config.max_num_batched_tokens),
+-            force_attention=True,
+-            skip_eplb=True,
+-        )
+-        hidden_states, last_hidden_states = self.model_runner._dummy_run(
+-            num_tokens=max_num_reqs,
+-            force_attention=True,
+-            uniform_decode=True,
+-            skip_eplb=True,
+-        )
++        # Dense eager Qwen needs one representative layer to load shared
++        # kernels, not a forward through every recovery layer. Prefill/decode
++        # and the layer-external sampler remain separately exercised. The
++        # compile sizes and CUDA graphs above retain their execution range.
++        with self.model_runner.warmup_layer_range():
++            self.model_runner._dummy_run(
++                # More tokens than requests exercises multi-token prefill.
++                num_tokens=min(max_num_reqs + 1,
++                               self.scheduler_config.max_num_batched_tokens),
++                force_attention=True,
++                skip_eplb=True,
++            )
++            hidden_states, last_hidden_states = self.model_runner._dummy_run(
++                num_tokens=max_num_reqs,
++                force_attention=True,
++                uniform_decode=True,
++                skip_eplb=True,
++            )
+         logger.info("[lazy_init] dummy_model_warmup: %.3fs",
+                     time.perf_counter() - warmup_phase_start)
+ 

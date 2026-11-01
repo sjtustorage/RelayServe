@@ -1,0 +1,104 @@
+[
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "representative-stability-1",
+    "lazy_seconds": 1.0849293489009142,
+    "ttft_seconds": 1.2725994735956192,
+    "commands": "relay-init32-tp2-representative-stability-1-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "representative-stability-2",
+    "lazy_seconds": 0.7511587245389819,
+    "ttft_seconds": 1.106823917478323,
+    "commands": "relay-init32-tp2-representative-stability-2-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "representative-stability-3",
+    "lazy_seconds": 0.4676115335896611,
+    "ttft_seconds": 0.7801798041909933,
+    "commands": "relay-init32-tp2-representative-stability-3-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "representative-stability-4",
+    "lazy_seconds": 0.46352608501911163,
+    "ttft_seconds": 0.8305946309119463,
+    "commands": "relay-init32-tp2-representative-stability-4-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "quiet-stability-1",
+    "lazy_seconds": 0.5989597151055932,
+    "ttft_seconds": 0.872466660104692,
+    "commands": "relay-init32-tp2-quiet-stability-1-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "schedstat-stability-1",
+    "lazy_seconds": 0.46930229011923075,
+    "ttft_seconds": 0.8047854546457529,
+    "commands": "relay-init32-tp2-schedstat-stability-1-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "affinity-disabled-1",
+    "commands": "relay-init32-tp2-affinity-disabled-1-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "gpu-preload-clean-1",
+    "lazy_seconds": 0.26425325870513916,
+    "ttft_seconds": 0.7058987580239773,
+    "commands": "relay-init32-tp2-gpu-preload-clean-1-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "gpu-preload-clean-2",
+    "lazy_seconds": 0.18862719275057316,
+    "ttft_seconds": 0.6395647451281548,
+    "commands": "relay-init32-tp2-gpu-preload-clean-2-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "gpu-preload-clean-3",
+    "lazy_seconds": 0.17671163007616997,
+    "ttft_seconds": 0.65942048933357,
+    "commands": "relay-init32-tp2-gpu-preload-clean-3-20261013.commands.json"
+  },
+  {
+    "model": 32,
+    "tp": 2,
+    "name": "gpu-preload-clean-4",
+    "lazy_seconds": 0.19017692562192678,
+    "ttft_seconds": 0.644710186868906,
+    "commands": "relay-init32-tp2-gpu-preload-clean-4-20261013.commands.json"
+  },
+  {
+    "model": 72,
+    "tp": 4,
+    "name": "gpu-preload-clean-1",
+    "lazy_seconds": 0.3173909494653344,
+    "ttft_seconds": 0.8120457138866186,
+    "commands": "relay-init72-tp4-gpu-preload-clean-1-20261013.commands.json"
+  },
+  {
+    "model": 72,
+    "tp": 4,
+    "name": "gpu-preload-clean-2",
+    "lazy_seconds": 0.24395002610981464,
+    "ttft_seconds": 0.7398171434178948,
+    "commands": "relay-init72-tp4-gpu-preload-clean-2-20261013.commands.json"
+  }
+]

@@ -1,0 +1,89 @@
+diff --git a/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py b/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
+index 8f28d6e45..ff25274df 100644
+--- a/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
++++ b/tests/relay_validation_logs/20261013/run_qwen25_72b_relay.py
+@@ -10,6 +10,8 @@ parser = argparse.ArgumentParser()
+ parser.add_argument('--name', default='baseline')
+ parser.add_argument('--prompt-tokens', type=int, default=128)
+ parser.add_argument('--arch-profile', action='store_true')
++parser.add_argument('--reserve-gpu-host-cores', action='store_true',
++                    help='Diagnostic: reserve four physical cores per NUMA node')
+ parser.add_argument('--gpu-devices', default='0,1,4,5',
+                     help='TP ranks ordered to match the two CPU NUMA shards')
+ args = parser.parse_args()
+@@ -25,6 +27,8 @@ folder = Path(f'/tmp/relay-init72-tp4-{args.name}-20261013')
+ cpu_env = os.environ.copy()
+ cpu_env.update(VLLM_CPU_OMP_THREADS_BIND='0-47|48-95',
+                VLLM_CPU_KVCACHE_SPACE='4' if args.prompt_tokens > 128 else '1', OMP_NUM_THREADS='48')
++if args.reserve_gpu_host_cores:
++    cpu_env.update(VLLM_CPU_OMP_THREADS_BIND='0-43|48-91', OMP_NUM_THREADS='44')
+ gpu_env = os.environ.copy()
+ gpu_env.update(VLLM_PROFILE_RELAY='1', VLLM_ATTENTION_BACKEND='FLASH_ATTN',
+                VLLM_FLASH_ATTN_VERSION='3', CUDA_VISIBLE_DEVICES=args.gpu_devices)
+@@ -37,6 +41,8 @@ cpu_cmd = ['timeout', '900', '/workspace/vllm-cpu/.venv/bin/python', test,
+            '--role', 'cpu', '--checkpoint', str(checkpoint), '--tp', '2', *common]
+ gpu_cmd = ['timeout', '600', '/workspace/vllm-gpu/.venv/bin/python', test,
+            '--role', 'gpu', '--tp', '4', *common]
++if args.reserve_gpu_host_cores:
++    gpu_cmd = ['taskset', '-c', '44-47,92-95', *gpu_cmd]
+ record = {'checkpoint': str(checkpoint), 'cpu_command': cpu_cmd,
+           'gpu_command': gpu_cmd, 'cpu_environment': {k: cpu_env[k] for k in
+           ('VLLM_CPU_OMP_THREADS_BIND', 'VLLM_CPU_KVCACHE_SPACE', 'OMP_NUM_THREADS')},
+diff --git a/tests/v1/worker/test_relay_full_warmup.py b/tests/v1/worker/test_relay_full_warmup.py
+index 334eeac56..528ffd923 100644
+--- a/tests/v1/worker/test_relay_full_warmup.py
++++ b/tests/v1/worker/test_relay_full_warmup.py
+@@ -108,7 +108,7 @@ def test_complete_warmup_preserves_compilation_and_graph_execution_range(monkeyp
+     runner.model_config.enforce_eager = False
+     runner.warmup_layer_range = lambda: GPUModelRunner.warmup_layer_range(runner)
+     worker = SimpleNamespace(
+-        model_runner=runner, device='cuda:0',
++        model_runner=runner, device='cuda:0', rank=0,
+         model_config=SimpleNamespace(enforce_eager=False, seed=0),
+         scheduler_config=SimpleNamespace(max_num_seqs=2, max_num_batched_tokens=4096),
+         vllm_config=SimpleNamespace(compilation_config=SimpleNamespace(
+diff --git a/vllm/model_executor/model_loader/shared_memory_loader.py b/vllm/model_executor/model_loader/shared_memory_loader.py
+index c0986c00f..f5ef3ed25 100644
+--- a/vllm/model_executor/model_loader/shared_memory_loader.py
++++ b/vllm/model_executor/model_loader/shared_memory_loader.py
+@@ -175,6 +175,7 @@ class SharedMemoryLoader(BaseModelLoader):
+             self._submitted_layers = set(priority_layers)
+ 
+             start_time_init_architecture = time.perf_counter()
++            architecture_thread_start = time.thread_time()
+             # Optional Python-only diagnostics: no CUDA events or stream fences,
+             # so the weight transfer continues concurrently with construction.
+             profile_dir = os.environ.get("VLLM_PROFILE_SHM_ARCH")
+@@ -201,7 +202,13 @@ class SharedMemoryLoader(BaseModelLoader):
+                     profiler.dump_stats(str(Path(profile_dir) /
+                         f"architecture-pid-{os.getpid()}-{uuid.uuid4().hex}.prof"))
+             end_time_init_architecture = time.perf_counter()
++            architecture_thread_seconds = time.thread_time() - architecture_thread_start
+             print(f"init architecture takes {end_time_init_architecture - start_time_init_architecture} seconds")
++            if os.environ.get('VLLM_PROFILE_RELAY'):
++                print(f'[relay architecture] rank={get_tensor_model_parallel_rank()} '
++                      f'wall={end_time_init_architecture - start_time_init_architecture:.6f}s '
++                      f'host_thread_cpu={architecture_thread_seconds:.6f}s',
++                      flush=True)
+ 
+             t_sd = time.perf_counter()
+             state_dict = model.state_dict()
+diff --git a/vllm/v1/worker/gpu_worker.py b/vllm/v1/worker/gpu_worker.py
+index f8cffe08a..3ea481a37 100644
+--- a/vllm/v1/worker/gpu_worker.py
++++ b/vllm/v1/worker/gpu_worker.py
+@@ -592,7 +592,14 @@ class Worker(WorkerBase):
+ 
+         # Readiness includes completion of this model's warmup kernels. Avoid
+         # a device-wide fence: unrelated weight-copy work remains asynchronous.
++        completion_start = time.perf_counter()
++        completion_thread_start = time.thread_time()
+         torch.cuda.current_stream(self.device).synchronize()
++        if os.environ.get("VLLM_PROFILE_RELAY"):
++            logger.info("[relay warmup completion] rank=%d wall=%.6fs "
++                        "host_thread_cpu=%.6fs", self.rank,
++                        time.perf_counter() - completion_start,
++                        time.thread_time() - completion_thread_start)
+ 
+         # Reset the seed to ensure that the random state is not affected by
+         # the model initialization and profiling.

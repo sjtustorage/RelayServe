@@ -1,0 +1,32 @@
+# ---- macOS / 编辑器 ----
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# ---- Python ----
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 大文件：trace 数据集（超过 GitHub 100MB 单文件上限）----
+sllm/trace/*.txt
+sllm/trace/*.pkl
+
+# ---- 模型权重 / 数据 ----
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+
+# ---- 本地密钥 / 配置 ----
+.env
+.env.local

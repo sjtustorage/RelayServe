@@ -1,0 +1,406 @@
+{
+  "metadata": {
+    "checkpoint": "/workspace/models/Qwen3-32B",
+    "gpu_repo": "/root/vllm-gpu",
+    "config_sha256": "97e295b63283935788fac5e4f8860862a56d4089538cafc93f0431f2ebe483bb",
+    "cpu_tp": 2,
+    "gpu_tp": 2,
+    "cpu_layers": 13,
+    "cpu_prefix_tokens": 0,
+    "cpu_inference_concurrent": true,
+    "prompt_tokens": 128,
+    "chunk_tokens": 4096,
+    "max_model_len": 4200,
+    "visible_gpus": "0,4",
+    "flash_attn_version_override": "3",
+    "weight_transfer_artifact_sha256": {
+      "vllm-gpu/shm_manager/csrc/model_manager.cpp": "afb8be43d8f565232670276e6145d95329c962c74501f18c54fa7f4639f497fc",
+      "vllm-gpu/shm_manager/csrc/model_manager.h": "0f30043829f90b8e187935d60af88e700487423085a75544522700c97e96c154",
+      "vllm-gpu/shm_manager/csrc/hidden_states_manager.cpp": "9dbbfa24770165bf65f68b414462e6c9b733718040e73c91bc0d9844e7e3e0af",
+      "vllm-gpu/shm_manager/csrc/python_bindings.cpp": "92bc7f20965243c70ec4fd5f5953c326019d8cf6dd7385da958e11b4913e2edc",
+      "vllm-gpu/shm_manager/torch.py": "d0b96271f84357f7737611428a3944631d9c95541d69fd941de973c2581be386",
+      "vllm-gpu/vllm/model_executor/model_loader/shared_memory_loader.py": "7ca317167693406d67ce324c5a6436c1cb2002dcd74a4354cebe8b3df3ef790f",
+      "vllm-gpu/vllm/v1/worker/gpu_worker.py": "cf4963f07ff8a2d475fa1d022d5f959ceedd8387fdf9cbe55d354fe94e1bdd9f",
+      "vllm-gpu/shm_manager/_C.cpython-312-x86_64-linux-gnu.so": "b9c463356137e8c62e49f3bb15acadb4464f1e574fac4060d34f196457f5747d"
+    },
+    "architecture_profile_directory": null,
+    "warmup_host_profile_directory": null,
+    "first_step_host_profile_directory": null,
+    "native_api_preload": "/usr/lib/x86_64-linux-gnu/libtcmalloc_minimal.so.4:/workspace/vllm-cpu/.venv/lib/libiomp5.so:",
+    "warmup_cuda_trace_directory": null,
+    "warmup_cuda_completion_diagnostic": false,
+    "host_weight_wait_diagnostic": false,
+    "latency_measurement_valid": true,
+    "trials": 2,
+    "revisions": {
+      "sllm": "a3d62595f13a0595b0726c69783eb6047fc73155",
+      "vllm-cpu": "f90222c968cfc1f8d6547cc816cfd273e0bcbd64",
+      "vllm-gpu": "09a7bcc393f164d5eaad3f7a56c3a562e3c94168"
+    }
+  },
+  "samples": [
+    {
+      "trial": 0,
+      "process_first_model": true,
+      "gpu_pids": [
+        1740605,
+        1740606
+      ],
+      "response": {
+        "model": "/tmp/resident-cpu-_yxju03l/model-resident-cpu-_yxju03l",
+        "generation": 1,
+        "ready": true,
+        "request_id": "relay-6658776695549802",
+        "token_ids": [
+          358,
+          1097,
+          198,
+          9707,
+          11,
+          358,
+          1097,
+          198
+        ],
+        "num_cached_tokens": 0,
+        "first_output_seconds": 0.39434319268912077,
+        "generation_seconds": 0.5414162054657936,
+        "generation_started_at": 6658777.110853059,
+        "generation_finished_at": 6658777.652269265,
+        "cold": true,
+        "plan": {
+          "cpu_layers": 13,
+          "cpu_prefix_tokens": 0
+        },
+        "cpu_layers": 13,
+        "cpu_seconds": 0.8084660293534398,
+        "cpu_start": 6658776.698418155,
+        "cpu_end": 6658777.506884185,
+        "gpu_ready": 6658777.109075865,
+        "create_seconds": 0.15705027896910906,
+        "lazy_seconds": 0.25644884910434484,
+        "request_started_at": 6658776.694248553,
+        "first_token_seconds": 0.8109476985409856,
+        "model_create_started_at": 6658776.695611083,
+        "model_create_to_first_token_seconds": 0.8095851689577103,
+        "first_token_source": "gpu",
+        "relay_seconds": 0.959159298799932
+      },
+      "cpu_steps": [
+        {
+          "step": 0,
+          "tokens": 128,
+          "cpu_layers": 13,
+          "rank_seconds": {
+            "0": 0.243432,
+            "1": 0.244963
+          },
+          "model_seconds": 0.244963
+        }
+      ],
+      "warm_response": {
+        "model": "/tmp/resident-cpu-_yxju03l/model-resident-cpu-_yxju03l",
+        "generation": 1,
+        "ready": true,
+        "request_id": "resident-1-7",
+        "token_ids": [
+          358,
+          1097,
+          198,
+          9707,
+          11,
+          358,
+          1097,
+          198
+        ],
+        "num_cached_tokens": 0,
+        "first_output_seconds": 0.04039520211517811,
+        "generation_seconds": 0.18091554939746857,
+        "generation_started_at": 6658777.654815593,
+        "generation_finished_at": 6658777.835731142,
+        "cold": false,
+        "request_started_at": 6658777.653659878,
+        "first_token_seconds": 0.041550916619598866,
+        "model_create_started_at": null,
+        "model_create_to_first_token_seconds": null,
+        "first_token_source": "gpu",
+        "relay_seconds": 0.18321306724101305
+      }
+    },
+    {
+      "trial": 0,
+      "process_first_model": false,
+      "gpu_pids": [
+        1740605,
+        1740606
+      ],
+      "response": {
+        "model": "/tmp/resident-cpu-_yxju03l/model-resident-cpu-_yxju03l",
+        "generation": 2,
+        "ready": true,
+        "request_id": "relay-6658778190069896",
+        "token_ids": [
+          358,
+          1097,
+          198,
+          9707,
+          11,
+          358,
+          1097,
+          198
+        ],
+        "num_cached_tokens": 0,
+        "first_output_seconds": 0.4608969949185848,
+        "generation_seconds": 0.6118847308680415,
+        "generation_started_at": 6658778.498507541,
+        "generation_finished_at": 6658779.110392272,
+        "cold": true,
+        "plan": {
+          "cpu_layers": 13,
+          "cpu_prefix_tokens": 0
+        },
+        "cpu_layers": 13,
+        "cpu_seconds": 0.767557299695909,
+        "cpu_start": 6658778.193081596,
+        "cpu_end": 6658778.960638896,
+        "gpu_ready": 6658778.495931688,
+        "create_seconds": 0.1271167192608118,
+        "lazy_seconds": 0.17871476896107197,
+        "request_started_at": 6658778.190009346,
+        "first_token_seconds": 0.7693951893597841,
+        "model_create_started_at": 6658778.190166008,
+        "model_create_to_first_token_seconds": 0.7692385278642178,
+        "first_token_source": "gpu",
+        "relay_seconds": 0.921460977755487
+      },
+      "cpu_steps": [
+        {
+          "step": 0,
+          "tokens": 128,
+          "cpu_layers": 13,
+          "rank_seconds": {
+            "0": 0.235884,
+            "1": 0.236226
+          },
+          "model_seconds": 0.236226
+        }
+      ],
+      "warm_response": {
+        "model": "/tmp/resident-cpu-_yxju03l/model-resident-cpu-_yxju03l",
+        "generation": 2,
+        "ready": true,
+        "request_id": "resident-2-13",
+        "token_ids": [
+          358,
+          1097,
+          198,
+          9707,
+          11,
+          358,
+          1097,
+          198
+        ],
+        "num_cached_tokens": 0,
+        "first_output_seconds": 0.04023736994713545,
+        "generation_seconds": 0.18431754503399134,
+        "generation_started_at": 6658779.112825775,
+        "generation_finished_at": 6658779.29714332,
+        "cold": false,
+        "request_started_at": 6658779.111827968,
+        "first_token_seconds": 0.041235176846385,
+        "model_create_started_at": null,
+        "model_create_to_first_token_seconds": null,
+        "first_token_source": "gpu",
+        "relay_seconds": 0.18642098363488913
+      }
+    },
+    {
+      "trial": 1,
+      "process_first_model": true,
+      "gpu_pids": [
+        1741734,
+        1741735
+      ],
+      "response": {
+        "model": "/tmp/resident-cpu-_yxju03l/model-resident-cpu-_yxju03l",
+        "generation": 1,
+        "ready": true,
+        "request_id": "relay-6658811384768332",
+        "token_ids": [
+          358,
+          1097,
+          198,
+          9707,
+          11,
+          358,
+          1097,
+          198
+        ],
+        "num_cached_tokens": 0,
+        "first_output_seconds": 0.3883471256121993,
+        "generation_seconds": 0.5324931126087904,
+        "generation_started_at": 6658811.790300625,
+        "generation_finished_at": 6658812.322793738,
+        "cold": true,
+        "plan": {
+          "cpu_layers": 13,
+          "cpu_prefix_tokens": 0
+        },
+        "cpu_layers": 13,
+        "cpu_seconds": 0.7916552061215043,
+        "cpu_start": 6658811.388126269,
+        "cpu_end": 6658812.179781475,
+        "gpu_ready": 6658811.788961814,
+        "create_seconds": 0.15159602463245392,
+        "lazy_seconds": 0.2525699380785227,
+        "request_started_at": 6658811.384742733,
+        "first_token_seconds": 0.7939050178974867,
+        "model_create_started_at": 6658811.384835854,
+        "model_create_to_first_token_seconds": 0.793811896815896,
+        "first_token_source": "gpu",
+        "relay_seconds": 0.9392071003094316
+      },
+      "cpu_steps": [
+        {
+          "step": 0,
+          "tokens": 128,
+          "cpu_layers": 13,
+          "rank_seconds": {
+            "0": 0.227153,
+            "1": 0.229424
+          },
+          "model_seconds": 0.229424
+        }
+      ],
+      "warm_response": {
+        "model": "/tmp/resident-cpu-_yxju03l/model-resident-cpu-_yxju03l",
+        "generation": 1,
+        "ready": true,
+        "request_id": "resident-1-7",
+        "token_ids": [
+          358,
+          1097,
+          198,
+          9707,
+          11,
+          358,
+          1097,
+          198
+        ],
+        "num_cached_tokens": 0,
+        "first_output_seconds": 0.040345982648432255,
+        "generation_seconds": 0.18723207153379917,
+        "generation_started_at": 6658812.325524382,
+        "generation_finished_at": 6658812.512756454,
+        "cold": false,
+        "request_started_at": 6658812.324244918,
+        "first_token_seconds": 0.041625446639955044,
+        "model_create_started_at": null,
+        "model_create_to_first_token_seconds": null,
+        "first_token_source": "gpu",
+        "relay_seconds": 0.18954681511968374
+      }
+    },
+    {
+      "trial": 1,
+      "process_first_model": false,
+      "gpu_pids": [
+        1741734,
+        1741735
+      ],
+      "response": {
+        "model": "/tmp/resident-cpu-_yxju03l/model-resident-cpu-_yxju03l",
+        "generation": 2,
+        "ready": true,
+        "request_id": "relay-6658812871322715",
+        "token_ids": [
+          358,
+          1097,
+          198,
+          9707,
+          11,
+          358,
+          1097,
+          198
+        ],
+        "num_cached_tokens": 0,
+        "first_output_seconds": 0.45580070186406374,
+        "generation_seconds": 0.6027086852118373,
+        "generation_started_at": 6658813.18187001,
+        "generation_finished_at": 6658813.784578695,
+        "cold": true,
+        "plan": {
+          "cpu_layers": 13,
+          "cpu_prefix_tokens": 0
+        },
+        "cpu_layers": 13,
+        "cpu_seconds": 0.7656331388279796,
+        "cpu_start": 6658812.874191631,
+        "cpu_end": 6658813.639824769,
+        "gpu_ready": 6658813.180483348,
+        "create_seconds": 0.1251572221517563,
+        "lazy_seconds": 0.18398068379610777,
+        "request_started_at": 6658812.871290677,
+        "first_token_seconds": 0.7663800343871117,
+        "model_create_started_at": 6658812.871378851,
+        "model_create_to_first_token_seconds": 0.7662918604910374,
+        "first_token_source": "gpu",
+        "relay_seconds": 0.9148116959258914
+      },
+      "cpu_steps": [
+        {
+          "step": 0,
+          "tokens": 128,
+          "cpu_layers": 13,
+          "rank_seconds": {
+            "1": 0.275854,
+            "0": 0.278022
+          },
+          "model_seconds": 0.278022
+        }
+      ],
+      "warm_response": {
+        "model": "/tmp/resident-cpu-_yxju03l/model-resident-cpu-_yxju03l",
+        "generation": 2,
+        "ready": true,
+        "request_id": "resident-2-13",
+        "token_ids": [
+          358,
+          1097,
+          198,
+          9707,
+          11,
+          358,
+          1097,
+          198
+        ],
+        "num_cached_tokens": 0,
+        "first_output_seconds": 0.040346656925976276,
+        "generation_seconds": 0.17874215729534626,
+        "generation_started_at": 6658813.787947208,
+        "generation_finished_at": 6658813.966689365,
+        "cold": false,
+        "request_started_at": 6658813.78663616,
+        "first_token_seconds": 0.041657704859972,
+        "model_create_started_at": null,
+        "model_create_to_first_token_seconds": null,
+        "first_token_source": "gpu",
+        "relay_seconds": 0.18110290821641684
+      }
+    }
+  ],
+  "original_safetensors_exact": true,
+  "takeover_logs": {
+    "trial-0-gpu.log": [
+      "INFO 10-13 11:53:59 [core.py:632] [relay takeover timing] step=0 readiness=0.001450s weights=0.000063s kv=0.000873s feedback=0.000004s",
+      "INFO 10-13 11:53:59 [core.py:632] [relay takeover timing] step=0 readiness=0.001378s weights=0.000083s kv=0.000930s feedback=0.000197s",
+      "INFO 10-13 11:54:00 [core.py:632] [relay takeover timing] step=0 readiness=0.001370s weights=0.048573s kv=0.000840s feedback=0.000182s",
+      "INFO 10-13 11:54:00 [core.py:632] [relay takeover timing] step=0 readiness=0.001413s weights=0.058442s kv=0.000811s feedback=0.000003s"
+    ],
+    "trial-1-gpu.log": [
+      "INFO 10-13 11:54:34 [core.py:632] [relay takeover timing] step=0 readiness=0.001405s weights=0.000063s kv=0.000859s feedback=0.000004s",
+      "INFO 10-13 11:54:34 [core.py:632] [relay takeover timing] step=0 readiness=0.001319s weights=0.000074s kv=0.000915s feedback=0.000177s",
+      "INFO 10-13 11:54:35 [core.py:632] [relay takeover timing] step=0 readiness=0.001409s weights=0.047133s kv=0.000894s feedback=0.000188s",
+      "INFO 10-13 11:54:35 [core.py:632] [relay takeover timing] step=0 readiness=0.001496s weights=0.055050s kv=0.000844s feedback=0.000005s"
+    ]
+  }
+}

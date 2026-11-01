@@ -1,0 +1,144 @@
+architecture-pid-99686-9102f9b9bb884861864f5d5803e2f22f.prof
+Tue Oct 13 17:20:49 2026    /tmp/relay-init72-tp4-representative-architecture-diagnostic-20261013.arch/architecture-pid-99686-9102f9b9bb884861864f5d5803e2f22f.prof
+
+         264441 function calls (239117 primitive calls) in 0.987 seconds
+
+   Ordered by: cumulative time
+   List reduced from 422 to 25 due to restriction <25>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.949    0.949 /workspace/vllm-gpu/vllm/model_executor/model_loader/utils.py:40(initialize_model)
+        1    0.000    0.000    0.945    0.945 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:502(__init__)
+        1    0.000    0.000    0.934    0.934 /workspace/vllm-gpu/vllm/compilation/decorators.py:198(__init__)
+        1    0.000    0.000    0.934    0.934 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:314(__init__)
+        1    0.003    0.003    0.931    0.931 /workspace/vllm-gpu/vllm/model_executor/models/utils.py:652(make_layers)
+       80    0.000    0.000    0.923    0.012 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:355(<lambda>)
+       80    0.018    0.000    0.922    0.012 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:224(__init__)
+       80    0.017    0.000    0.542    0.007 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:130(__init__)
+    12635    0.162    0.000    0.372    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py:1944(__setattr__)
+       80    0.030    0.000    0.313    0.004 /workspace/vllm-gpu/vllm/attention/layer.py:71(__init__)
+       80    0.002    0.000    0.248    0.003 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:92(__init__)
+      160    0.007    0.000    0.189    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:471(__init__)
+      160    0.013    0.000    0.171    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:1248(__init__)
+73733/49831    0.064    0.000    0.170    0.000 {built-in method builtins.isinstance}
+      320    0.002    0.000    0.134    0.000 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:189(create_weights)
+      320    0.011    0.000    0.127    0.000 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:245(__init__)
+       80    0.000    0.000    0.110    0.001 /workspace/vllm-gpu/vllm/v1/attention/backends/flash_attn.py:370(__init__)
+       80    0.001    0.000    0.110    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:633(__init__)
+       80    0.001    0.000    0.109    0.001 /workspace/vllm-gpu/vllm/attention/utils/fa_utils.py:23(get_flash_attn_version)
+      402    0.095    0.000    0.095    0.000 {built-in method torch.empty}
+      564    0.002    0.000    0.095    0.000 /workspace/vllm-gpu/vllm/model_executor/custom_op.py:39(__init__)
+      240    0.000    0.000    0.094    0.000 /workspace/vllm-gpu/vllm/vllm_flash_attn/flash_attn_interface.py:52(is_fa_version_supported)
+      240    0.002    0.000    0.093    0.000 /workspace/vllm-gpu/vllm/vllm_flash_attn/flash_attn_interface.py:40(_is_fa3_supported)
+      161    0.005    0.000    0.093    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/layernorm.py:96(__init__)
+      960    0.004    0.000    0.092    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/cuda/__init__.py:547(get_device_capability)
+
+
+architecture-pid-99691-97915cabbaa94a6a82e7a798212dbde3.prof
+Tue Oct 13 17:20:49 2026    /tmp/relay-init72-tp4-representative-architecture-diagnostic-20261013.arch/architecture-pid-99691-97915cabbaa94a6a82e7a798212dbde3.prof
+
+         264441 function calls (239117 primitive calls) in 1.002 seconds
+
+   Ordered by: cumulative time
+   List reduced from 422 to 25 due to restriction <25>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.969    0.969 /workspace/vllm-gpu/vllm/model_executor/model_loader/utils.py:40(initialize_model)
+        1    0.000    0.000    0.966    0.966 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:502(__init__)
+        1    0.000    0.000    0.965    0.965 /workspace/vllm-gpu/vllm/compilation/decorators.py:198(__init__)
+        1    0.000    0.000    0.965    0.965 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:314(__init__)
+        1    0.000    0.000    0.957    0.957 /workspace/vllm-gpu/vllm/model_executor/models/utils.py:652(make_layers)
+       80    0.000    0.000    0.935    0.012 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:355(<lambda>)
+       80    0.006    0.000    0.935    0.012 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:224(__init__)
+       80    0.022    0.000    0.580    0.007 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:130(__init__)
+    12635    0.150    0.000    0.337    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py:1944(__setattr__)
+       80    0.029    0.000    0.300    0.004 /workspace/vllm-gpu/vllm/attention/layer.py:71(__init__)
+       80    0.004    0.000    0.258    0.003 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:92(__init__)
+      160    0.008    0.000    0.222    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:471(__init__)
+73733/49831    0.054    0.000    0.168    0.000 {built-in method builtins.isinstance}
+      320    0.012    0.000    0.155    0.000 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:189(create_weights)
+       80    0.001    0.000    0.145    0.002 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:633(__init__)
+      320    0.006    0.000    0.144    0.000 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:245(__init__)
+      160    0.002    0.000    0.132    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:1248(__init__)
+       80    0.001    0.000    0.122    0.002 /workspace/vllm-gpu/vllm/v1/attention/backends/flash_attn.py:370(__init__)
+       80    0.002    0.000    0.119    0.001 /workspace/vllm-gpu/vllm/attention/utils/fa_utils.py:23(get_flash_attn_version)
+      888    0.116    0.000    0.117    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py:466(__init__)
+      240    0.000    0.000    0.111    0.000 /workspace/vllm-gpu/vllm/vllm_flash_attn/flash_attn_interface.py:52(is_fa_version_supported)
+      240    0.023    0.000    0.111    0.000 /workspace/vllm-gpu/vllm/vllm_flash_attn/flash_attn_interface.py:40(_is_fa3_supported)
+      564    0.002    0.000    0.108    0.000 /workspace/vllm-gpu/vllm/model_executor/custom_op.py:39(__init__)
+       80    0.002    0.000    0.098    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:905(__init__)
+      960    0.004    0.000    0.088    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/cuda/__init__.py:547(get_device_capability)
+
+
+architecture-pid-99685-878e9a4047d9452e848a8530f40cf2f0.prof
+Tue Oct 13 17:20:49 2026    /tmp/relay-init72-tp4-representative-architecture-diagnostic-20261013.arch/architecture-pid-99685-878e9a4047d9452e848a8530f40cf2f0.prof
+
+         264042 function calls (238721 primitive calls) in 0.983 seconds
+
+   Ordered by: cumulative time
+   List reduced from 311 to 25 due to restriction <25>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    0.958    0.958 /workspace/vllm-gpu/vllm/model_executor/model_loader/utils.py:40(initialize_model)
+        1    0.000    0.000    0.957    0.957 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:502(__init__)
+        1    0.000    0.000    0.942    0.942 /workspace/vllm-gpu/vllm/compilation/decorators.py:198(__init__)
+        1    0.000    0.000    0.942    0.942 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:314(__init__)
+        1    0.000    0.000    0.940    0.940 /workspace/vllm-gpu/vllm/model_executor/models/utils.py:652(make_layers)
+       80    0.000    0.000    0.925    0.012 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:355(<lambda>)
+       80    0.008    0.000    0.925    0.012 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:224(__init__)
+       80    0.012    0.000    0.506    0.006 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:130(__init__)
+    12635    0.159    0.000    0.390    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py:1944(__setattr__)
+       80    0.005    0.000    0.300    0.004 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:92(__init__)
+       80    0.007    0.000    0.249    0.003 /workspace/vllm-gpu/vllm/attention/layer.py:71(__init__)
+      160    0.010    0.000    0.229    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:471(__init__)
+73701/49799    0.100    0.000    0.207    0.000 {built-in method builtins.isinstance}
+      160    0.009    0.000    0.178    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:1248(__init__)
+      320    0.007    0.000    0.174    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:189(create_weights)
+      564    0.014    0.000    0.139    0.000 /workspace/vllm-gpu/vllm/model_executor/custom_op.py:39(__init__)
+       80    0.001    0.000    0.138    0.002 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:633(__init__)
+      320    0.002    0.000    0.122    0.000 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:245(__init__)
+       80    0.001    0.000    0.116    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:905(__init__)
+      402    0.113    0.000    0.113    0.000 {built-in method torch.empty}
+      888    0.111    0.000    0.113    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py:466(__init__)
+       80    0.001    0.000    0.095    0.001 /workspace/vllm-gpu/vllm/v1/attention/backends/flash_attn.py:370(__init__)
+       80    0.001    0.000    0.094    0.001 /workspace/vllm-gpu/vllm/attention/utils/fa_utils.py:23(get_flash_attn_version)
+      240    0.000    0.000    0.086    0.000 /workspace/vllm-gpu/vllm/vllm_flash_attn/flash_attn_interface.py:52(is_fa_version_supported)
+      240    0.001    0.000    0.086    0.000 /workspace/vllm-gpu/vllm/vllm_flash_attn/flash_attn_interface.py:40(_is_fa3_supported)
+
+
+architecture-pid-99688-fd147312f3b34f5e80776de5eb67d120.prof
+Tue Oct 13 17:20:49 2026    /tmp/relay-init72-tp4-representative-architecture-diagnostic-20261013.arch/architecture-pid-99688-fd147312f3b34f5e80776de5eb67d120.prof
+
+         264441 function calls (239117 primitive calls) in 1.059 seconds
+
+   Ordered by: cumulative time
+   List reduced from 422 to 25 due to restriction <25>
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    1.039    1.039 /workspace/vllm-gpu/vllm/model_executor/model_loader/utils.py:40(initialize_model)
+        1    0.000    0.000    1.036    1.036 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:502(__init__)
+        1    0.000    0.000    1.034    1.034 /workspace/vllm-gpu/vllm/compilation/decorators.py:198(__init__)
+        1    0.000    0.000    1.033    1.033 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:314(__init__)
+        1    0.000    0.000    1.031    1.031 /workspace/vllm-gpu/vllm/model_executor/models/utils.py:652(make_layers)
+       80    0.000    0.000    1.025    0.013 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:355(<lambda>)
+       80    0.008    0.000    1.025    0.013 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:224(__init__)
+       80    0.009    0.000    0.646    0.008 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:130(__init__)
+    12635    0.167    0.000    0.359    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/nn/modules/module.py:1944(__setattr__)
+       80    0.018    0.000    0.274    0.003 /workspace/vllm-gpu/vllm/attention/layer.py:71(__init__)
+       80    0.002    0.000    0.270    0.003 /workspace/vllm-gpu/vllm/model_executor/models/qwen2.py:92(__init__)
+      160    0.010    0.000    0.234    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:471(__init__)
+      160    0.009    0.000    0.196    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:1248(__init__)
+      320    0.035    0.000    0.169    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:189(create_weights)
+73733/49831    0.066    0.000    0.169    0.000 {built-in method builtins.isinstance}
+      320    0.012    0.000    0.153    0.000 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:245(__init__)
+       80    0.001    0.000    0.130    0.002 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:633(__init__)
+       80    0.000    0.000    0.128    0.002 /workspace/vllm-gpu/vllm/v1/attention/backends/flash_attn.py:370(__init__)
+       80    0.001    0.000    0.127    0.002 /workspace/vllm-gpu/vllm/attention/utils/fa_utils.py:23(get_flash_attn_version)
+      240    0.000    0.000    0.124    0.001 /workspace/vllm-gpu/vllm/vllm_flash_attn/flash_attn_interface.py:52(is_fa_version_supported)
+      240    0.001    0.000    0.123    0.001 /workspace/vllm-gpu/vllm/vllm_flash_attn/flash_attn_interface.py:40(_is_fa3_supported)
+      960    0.015    0.000    0.122    0.000 /workspace/vllm-gpu/.venv/lib/python3.12/site-packages/torch/cuda/__init__.py:547(get_device_capability)
+       80    0.004    0.000    0.119    0.001 /workspace/vllm-gpu/vllm/model_executor/layers/linear.py:905(__init__)
+      402    0.115    0.000    0.115    0.000 {built-in method torch.empty}
+      564    0.002    0.000    0.113    0.000 /workspace/vllm-gpu/vllm/model_executor/custom_op.py:39(__init__)
+
+
